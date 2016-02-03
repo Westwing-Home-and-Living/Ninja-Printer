@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ninja Printer Example</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>Hello, Ninja!</h1>
-
-    <form id="ninja-form" action="">
-        <div class="form-group">
-            <label for="zplPrinter">Name of your Zebra Printer</label>
-            <input type="text" class="form-control" id="zplPrinter" placeholder="Zebra Printer">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ninja Printer Example</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1>Hello, Ninja!</h1>
+                <p class="lead">Use the below forms to print a Zebra Label or a PDF separately, and provide the name of the printer as seen by your Operating System.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="zpl-form" action="">
+                        <div class="form-group">
+                            <label for="zplPrinter">Name of your Zebra Printer</label>
+                            <input type="text" class="form-control printer-name" id="zpl-printer" placeholder="Zebra Printer">
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Print Example Zpl">
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form id="pdf-form" action="">
+                        <div class="form-group">
+                            <label for="pdfPrinter">Name of your PDF Printer</label>
+                            <input type="text" class="form-control printer-name" id="pdf-printer" placeholder="PDF Printer">
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Print Example Pdf">
+                    </form>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1em;">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <table class="table table-striped">
+                        <tbody id="output">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="pdfPrinter">Name of your PDF Printer</label>
-            <input type="text" class="form-control" id="pdfPrinter" placeholder="PDF Printer">
-        </div>
-        <input type="submit" class="btn btn-default" value="Print Example Zpl">
-        <input type="submit" class="btn btn-default" value="Print Example Pdf">
-    </form>
 
-    <script src="example.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  </body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="docs.js"></script>
+        <script src="example.js"></script>
+    </body>
 </html>
 
