@@ -1,0 +1,9 @@
+.idea
+.DS_Store
+java/.project
+java/.settings
+java/.gitignore
+java/.classpath
+java/dist/.gitignore
+java/src/.DS_Store
+

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#cd "${BASH_SOURCE%/*}" || exit
+set -e
+
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+cd  $DIR
+java -jar NinjaPrinter.jar
