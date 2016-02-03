@@ -1,6 +1,6 @@
 {
     "name": "Ninja Printer",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "manifest_version": 2,
     "description": "Westwing Printing solution",
     "background": {
@@ -12,16 +12,14 @@
     "content_scripts": [
         {
             "matches": [
-                "http://oms.west-wing.ws/*",
-                "http://oms.westwing.es/*",
-                "https://oms.westwing.es/*",
-                "http://oms.westwing.fr/*",
-                "https://oms.westwing.fr/*",
-                "http://oms.westwing.pl/*",
-                "https://oms.westwing.pl/*",
-                "http://oms.westwing.de/*",
-                "https://oms.westwing.de/*",
-                "*://*.westwing.eu/*"
+                "*://oms.west-wing.ws/*",
+                "*://oms.westwing.es/*",
+                "*://oms.westwing.fr/*",
+                "*://oms.westwing.pl/*",
+                "*://oms.westwing.de/*",
+                "*://*.westwing.eu/*",
+                "*://127.0.0.1/*",
+                "*://localhost/*"
             ],
             "js": [
                 "content.js"
