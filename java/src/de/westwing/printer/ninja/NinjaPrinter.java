@@ -126,7 +126,7 @@ public class NinjaPrinter {
 	 */
 	protected MessageInterface getErrorMessage(JsonPrintMessageInterface printMessage, Exception ex)
 	{ 
-		int requestId = printMessage == null ? null : printMessage.getRequestId();
+		String requestId = printMessage == null ? null : printMessage.getRequestId();
 		
 		String response = "{\"success\":false,\"message\":\"" + ex.getMessage() + "\", \"requestId\":\"" + requestId + "\"}";
 		MessageInterface responseMessage = new Message(response);

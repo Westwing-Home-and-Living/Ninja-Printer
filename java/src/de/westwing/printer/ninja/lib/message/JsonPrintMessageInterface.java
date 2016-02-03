@@ -9,9 +9,9 @@ public interface JsonPrintMessageInterface {
 	
 	public String getPrinterName();
 	
-	public int getRequestId();
+	public String getRequestId();
 	
-	public void setRequestId(int id);
+	public void setRequestId(String id);
 	
 	public void setPrinterName(String printerName);
 	

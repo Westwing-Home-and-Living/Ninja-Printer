@@ -87,7 +87,7 @@ public class JsonMessageParser {
 		printMessage.setDocument(document);
 		
 		if(json.has("requestId")) {
-			printMessage.setRequestId(json.getInt("requestId"));
+			printMessage.setRequestId(json.getString("requestId"));
 		}
 		return printMessage;
 		

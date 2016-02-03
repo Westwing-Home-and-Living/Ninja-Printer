@@ -15,7 +15,7 @@ public class JsonPrintMessage implements JsonPrintMessageInterface {
 	
 	protected DocumentInterface document;
 	
-	protected int requestId;
+	protected String requestId;
 	
 	protected MessageInterface message;
 	
@@ -56,12 +56,12 @@ public class JsonPrintMessage implements JsonPrintMessageInterface {
 		this.document = document;
 	}
 
-	@Override public int getRequestId() {
+	@Override public String getRequestId() {
 			
 		return this.requestId;
 	}
 		
-	@Override public void setRequestId(int requestId) {
+	@Override public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
 	
