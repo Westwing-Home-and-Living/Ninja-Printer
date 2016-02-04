@@ -20,7 +20,7 @@ own extension if you intend to use it in production.
 
 ### Development
 
-For development purposes it's best to use a local development
+For development purposes it's best to use a local development:
 
 1. Fork this repo (or get the code elsehow)
 2. chrome-extension/browser/manifest.json
@@ -33,14 +33,16 @@ For development purposes it's best to use a local development
   3. Click `Load unpacked extension...`
   4. Navigate to the chrome-extension/browser directory of your source code.
   5. Note the ID of your newly installed extension
-4. *For OSX:* chrome-extension/host/de.westwing.chrome.printer.ninja.json
+4. **For OSX:** chrome-extension/host/de.westwing.chrome.printer.ninja.json
   1. Find and open file
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
-5. *For Windows:* chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
+  4. Execute `install_host.sh`
+5. **For Windows:** chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
   1. Find and open file
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
+  4. Execute `install_host.bat`
 
 \*: It might work similarly with Chromium and derivative browsers, but has only been tested using Google Chrome.
 
@@ -52,13 +54,17 @@ directory to [chrome web store](https://chrome.google.com/webstore/category/exte
 Installation
 ------------
 
-Installation instructions for Ninja Printer.
+Basic installation instructions for Ninja Printer.
 
 ### On Windows
 
 #### 1. Install the extension 
 
-- Download the zip file from the dropbox link above
+You can always test the provided example application via
+[the official extension](https://chrome.google.com/webstore/detail/ninja-printer/fnacfbhdnejbjiglnlfgeaaifcmmmncb).
+Or you can setup your development version:
+
+ - Fork or download the source code
  - Open chrome and click on the ‘Tools’ icon on the right hand corner
  - Select ‘Extensions’
  - On the top right hand side tick ‘Developer mode’
@@ -66,7 +72,7 @@ Installation instructions for Ninja Printer.
  - Select the ‘browser’ folder inside the original file ‘chrome-extension’
  - You will see the extension already enabled in your list of chrome extension
 
-**Note:** No need to tick ‘allow on incognito mode’ as you will always need to enable the extension on the incognito window.
+**Note:** If you tick ‘allow on incognito mode’ than you will always need to enable the extension on the incognito window.
 
 #### 2. Install the host 
 
@@ -77,7 +83,11 @@ Installation instructions for Ninja Printer.
 
 #### 1. Install the extension 
 
- - Download the zip file from the dropbox link above
+You can always test the provided example application via
+[the official extension](https://chrome.google.com/webstore/detail/ninja-printer/fnacfbhdnejbjiglnlfgeaaifcmmmncb).
+Or you can setup your development version:
+
+ - Fork or download the source code
  - Open chrome and click on the hamburger menu on the right hand corner 
  - Go to 'More tools' > ‘Extensions’
  - On the top right hand side tick ‘Developer mode’
@@ -85,7 +95,7 @@ Installation instructions for Ninja Printer.
  - Select the ‘browser’ folder inside the original file ‘chrome-extension’
  - You will see the extension already enabled in your list of chrome extension
 
-**Note:** No need to tick ‘allow on incognito mode’ as you will always need to enable the extension on the incognito window.
+**Note:** If you tick ‘allow on incognito mode’ than you will always need to enable the extension on the incognito window.
 
 #### 2. Install the host
 
@@ -99,8 +109,7 @@ Usage
 The extension will inject NinjaPrinter.js into your website which containes the NinjaPrinter JavaScript object.
 
 The NinjaPrinter object defines:
- -  3 methods for printing:
-   - print
+ -  3 public methods for printing:
    - printZpl
    - printPdf
  - 3 events to listen to:
@@ -112,4 +121,8 @@ The NinjaPrinter object defines:
    - off
 
 For some minimalist usage examples, please check out the contents of the examples directory.
+
+**Note:** You can always read the source code, but if you want to test the example application, than you'll need to use
+some webserver to make the example page available as `localhost` or `127.0.0.1`. Otherwise the content script will not
+be injected. For example with php it's just `php -S localhost:8080`.
 
