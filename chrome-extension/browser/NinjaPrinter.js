@@ -21,7 +21,12 @@ var NinjaPrinter = {
     },
 
     // Triggers a print request
-    // var request = {printerName: "printerName", printerType: "[label|PDF]", fileContent: "base64enecoded" [, filePath:"/absolutePath"]}
+    // var request = {
+    //     printerName: "printerName",
+    //     printerType: "[label|PDF]",
+    //     fileContent: "base64encoded_or_absolutePath",
+    //     requestId: "requestId"
+    // }
     print: function (request) {
         this._fireEvent(this.events.beforePrint, {data: request});
         window.postMessage(request, "*");
@@ -29,23 +34,23 @@ var NinjaPrinter = {
     },
 
     // Triggers printing a zpl document
-    printZpl: function (printerName, base64Content) {
-        this.print({printerName: printerName, fileContent: base64Content, printerType: "label"});
+    printZpl: function (printerName, base64Content, requestId) {
+        this.print({printerName: printerName, fileContent: base64Content, printerType: "label", requestId: requestId});
     },
 
     // Triggers printing a pdf document
-    printPdf: function (printerName, base64Content) {
-        this.print({printerName: printerName, fileContent: base64Content, printerType: "PDF"});
+    printPdf: function (printerName, base64Content, requestId) {
+        this.print({printerName: printerName, fileContent: base64Content, printerType: "PDF", requestId: requestId});
     },
 
     // @deprecated
-    printLabel: function (printerName, base64Content) {
-        this.printZpl(printerName, base64Content);
+    printLabel: function (printerName, base64Content, requestId) {
+        this.printZpl(printerName, base64Content, requestId);
     },
 
     // @deprecated
-    printPDF: function (printerName, base64Content) {
-        this.printPdf(printerName, base64Content);
+    printPDF: function (printerName, base64Content, requestId) {
+        this.printPdf(printerName, base64Content, requestId);
     },
 
     // Attach an event listener.
