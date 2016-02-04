@@ -15,9 +15,39 @@ for 2 different type of documents: ZPL (label) and the PDF, but extending it sho
 Security & Customisation
 ------------------------
 
-For obvious security reasons, you will need to modify the `content_scripts` to match your needs in order to use it.
-The web application will also need to be aware of the name of the available printers for the document type that is
-to be printed.
+Since the base implementation only supports *westwing* domains, localhost and 127.0.0.1, you will need to create your
+own extension if you intend to use it in production.
+
+### Development
+
+For development purposes it's best to use a local development
+
+1. Fork this repo (or get the code elsehow)
+2. chrome-extension/browser/manifest.json
+  1. Find and open file
+  2. Amend `content_scripts.matches` to match your needs
+  3. Save file
+3. [Chrome Extensions page in \*Google Chrome](chrome://extensions/)
+  1. Open page
+  2. Make sure `Developer Mode` is ticked
+  3. Click `Load unpacked extension...`
+  4. Navigate to the chrome-extension/browser directory of your source code.
+  5. Note the ID of your newly installed extension
+4. For OSX: chrome-extension/host/de.westwing.chrome.printer.ninja.json
+  1. Find and open file
+  2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
+  3. Save file
+5. For Windows: chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
+  1. Find and open file
+  2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
+  3. Save file
+
+\* It might work similarly with Chromium and derivative browsers, but has only been tested using Google Chrome.
+
+### Production
+
+For production you'll also need to follow the above steps, but you'll need upload your chrome-extension/browser
+directory to [chrome web store](https://chrome.google.com/webstore/category/extensions) and install from there.
 
 Installation
 ------------
