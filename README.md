@@ -27,22 +27,22 @@ For development purposes it's best to use a local development
   1. Find and open file
   2. Amend `content_scripts.matches` to match your needs
   3. Save file
-3. [Chrome Extensions page in \*Google Chrome](chrome://extensions/)
+3. [Chrome Extensions page in Google Chrome\*](chrome://extensions/)
   1. Open page
   2. Make sure `Developer Mode` is ticked
   3. Click `Load unpacked extension...`
   4. Navigate to the chrome-extension/browser directory of your source code.
   5. Note the ID of your newly installed extension
-4. For OSX: chrome-extension/host/de.westwing.chrome.printer.ninja.json
+4. *For OSX:* chrome-extension/host/de.westwing.chrome.printer.ninja.json
   1. Find and open file
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
-5. For Windows: chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
+5. *For Windows:* chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
   1. Find and open file
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
 
-\* It might work similarly with Chromium and derivative browsers, but has only been tested using Google Chrome.
+\*: It might work similarly with Chromium and derivative browsers, but has only been tested using Google Chrome.
 
 ### Production
 
@@ -82,7 +82,7 @@ Installation instructions for Ninja Printer.
  - Go to 'More tools' > ‘Extensions’
  - On the top right hand side tick ‘Developer mode’
  - Click ‘Load unpacked extension’
- - Select the ‘app’ folder inside the original file ‘chrome-extension’
+ - Select the ‘browser’ folder inside the original file ‘chrome-extension’
  - You will see the extension already enabled in your list of chrome extension
 
 **Note:** No need to tick ‘allow on incognito mode’ as you will always need to enable the extension on the incognito window.
