@@ -12,11 +12,11 @@
     "content_scripts": [
         {
             "matches": [
-                "*://oms.west-wing.ws/*",
-                "*://oms.westwing.es/*",
-                "*://oms.westwing.fr/*",
-                "*://oms.westwing.pl/*",
-                "*://oms.westwing.de/*",
+                "*://*.west-wing.ws/*",
+                "*://*.westwing.es/*",
+                "*://*.westwing.fr/*",
+                "*://*.westwing.pl/*",
+                "*://*.westwing.de/*",
                 "*://*.westwing.eu/*",
                 "*://127.0.0.1/*",
                 "*://localhost/*"
@@ -36,11 +36,11 @@
     "permissions": [
         "nativeMessaging",
         "tabs",
-        "*://oms.west-wing.ws/*",
-        "*://oms.westwing.es/*",
-        "*://oms.westwing.fr/*",
-        "*://oms.westwing.pl/*",
-        "*://oms.westwing.de/*",
+        "*://*.west-wing.ws/*",
+        "*://*.westwing.es/*",
+        "*://*.westwing.fr/*",
+        "*://*.westwing.pl/*",
+        "*://*.westwing.de/*",
         "*://*.westwing.eu/*",
         "*://127.0.0.1/*",
         "*://localhost/*"
