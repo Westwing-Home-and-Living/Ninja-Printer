@@ -57,6 +57,15 @@ var NinjaPrinter = {
         return NinjaPrinter;
     },
 
+    // Remove event listeners from a specific event
+    off: function (eventName) {
+        if (NinjaPrinter.listeners[eventName]) {
+            NinjaPrinter.listeners[eventName] = [];
+        }
+
+        return NinjaPrinter;
+    },
+
     // Helper method to create and dispatch custom events.
     _fireEvent: function (eventName, data) {
         var customEvent = new CustomEvent(eventName, data);

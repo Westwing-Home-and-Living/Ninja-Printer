@@ -67,15 +67,17 @@ Usage
 The extension will inject NinjaPrinter.js into your website which containes the NinjaPrinter JavaScript object.
 
 The NinjaPrinter object defines:
- -  2 methods for printing:
+ -  3 methods for printing:
+   - print
    - printZpl
    - printPdf
  - 3 events to listen to:
    - ninjaprinter.result
    - ninjaprinter.beforePrint
    - ninjaprinter.afterPrint
- - 1 method for subscribing to events:
+ - 2 methods to manage event subscription:
    - on
+   - off
 
 For some minimalist usage examples, please check out the contents of the examples directory.
 
