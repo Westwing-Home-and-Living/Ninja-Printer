@@ -36,7 +36,13 @@
     "permissions": [
         "nativeMessaging",
         "tabs",
-        "http://*/*",
-        "https://*/*"
+        "*://oms.west-wing.ws/*",
+        "*://oms.westwing.es/*",
+        "*://oms.westwing.fr/*",
+        "*://oms.westwing.pl/*",
+        "*://oms.westwing.de/*",
+        "*://*.westwing.eu/*",
+        "*://127.0.0.1/*",
+        "*://localhost/*"
     ]
 }
