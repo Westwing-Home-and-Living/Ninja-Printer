@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Calendar;
 
 import javax.swing.JFrame;
@@ -28,6 +32,9 @@ import javax.swing.SwingUtilities;
  */
 public class NinjaPrinter {
 
+	protected static final String DEBUG_FILE_NAME = "print-debug.log";
+	protected static final int MAX_DEBUG_FILE_SIZE = 5000000;
+	
 	protected MessageReader reader;
 	protected MessageOutput writer;
 	
@@ -141,7 +148,28 @@ public class NinjaPrinter {
 	 */
 	public static void debug(String message)
 	{
-		System.err.println(Calendar.getInstance().getTime() + " " + message);
+		try {
+		    Files.write(Paths.get(DEBUG_FILE_NAME), (Calendar.getInstance().getTime() + " " + message + '\n').getBytes(), StandardOpenOption.WRITE);			
+		} catch (IOException e) {
+			System.err.println("Can not write to file:" + e.getMessage());
+			System.err.println(Calendar.getInstance().getTime() + " " + message);
+		}
+	}
+	
+	protected static Path getFile() throws IOException
+	{
+		Path debugFilePath = Paths.get(DEBUG_FILE_NAME);
+		
+		if (Files.exists(debugFilePath) && Files.size(debugFilePath) < MAX_DEBUG_FILE_SIZE) {
+			return debugFilePath;
+		}
+		
+		try {
+			Files.createFile(debugFilePath);
+		} catch (IOException e) {
+		}
+		
+		return debugFilePath;
 	}
 
 	/**
@@ -180,3 +208,4 @@ public class NinjaPrinter {
 	}
 
 }
+
