@@ -149,22 +149,29 @@ public class NinjaPrinter {
 	public static void debug(String message)
 	{
 		try {
-		    Files.write(Paths.get(DEBUG_FILE_NAME), (Calendar.getInstance().getTime() + " " + message + '\n').getBytes(), StandardOpenOption.WRITE);			
+		    Files.write(getDebugFilePath(), (Calendar.getInstance().getTime() + " " + message + '\n').getBytes(), StandardOpenOption.APPEND);			
 		} catch (IOException e) {
 			System.err.println("Can not write to file:" + e.getMessage());
 			System.err.println(Calendar.getInstance().getTime() + " " + message);
 		}
 	}
 	
-	protected static Path getFile() throws IOException
+	/**
+	 * Retrieves the file path of the debug log file
+	 * - creates the file if not exists or file already exceeded the file size limit
+	 * - opens the file for appending otherwise 
+	 * 
+	 * @return
+	 */
+	protected static Path getDebugFilePath()
 	{
 		Path debugFilePath = Paths.get(DEBUG_FILE_NAME);
-		
-		if (Files.exists(debugFilePath) && Files.size(debugFilePath) < MAX_DEBUG_FILE_SIZE) {
-			return debugFilePath;
-		}
-		
+
 		try {
+			if (Files.exists(debugFilePath) && Files.size(debugFilePath) < MAX_DEBUG_FILE_SIZE) {
+				return debugFilePath;
+			}
+			
 			Files.createFile(debugFilePath);
 		} catch (IOException e) {
 		}
