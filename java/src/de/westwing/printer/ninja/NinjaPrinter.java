@@ -99,7 +99,12 @@ public class NinjaPrinter {
 				break;
 			}
 		} catch (Exception ex) {
-			debug("Exception thrown");
+			for (StackTraceElement ste : ex.getStackTrace()) {
+				debug(ste.toString());
+			}
+			
+			
+			debug("Exception thrown:" + ex.getMessage());
 			try {
 				this.writer.write(this.getErrorMessage(printMessage, ex));
 			} catch (IOException ioex) {
@@ -149,7 +154,7 @@ public class NinjaPrinter {
 	public static void debug(String message)
 	{
 		try {
-		    Files.write(getDebugFilePath(), (Calendar.getInstance().getTime() + " " + message + '\n').getBytes(), StandardOpenOption.APPEND);			
+		    Files.write(getDebugFilePath(), (Calendar.getInstance().getTime() + " " + message + '\r' +'\n').getBytes(), StandardOpenOption.APPEND);			
 		} catch (IOException e) {
 			System.err.println("Can not write to file:" + e.getMessage());
 			System.err.println(Calendar.getInstance().getTime() + " " + message);
@@ -172,6 +177,9 @@ public class NinjaPrinter {
 				return debugFilePath;
 			}
 			
+			if (Files.exists(debugFilePath)) {
+				Files.delete(debugFilePath);				
+			}
 			Files.createFile(debugFilePath);
 		} catch (IOException e) {
 		}
