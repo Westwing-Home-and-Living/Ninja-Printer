@@ -126,3 +126,24 @@ For some minimalist usage examples, please check out the contents of the example
 some webserver to make the example page available as `localhost` or `127.0.0.1`. Otherwise the content script will not
 be injected. For example with php it's just `php -S localhost:8080`.
 
+Development (OSX)
+-----------------
+
+### Compiling the host application
+
+Cd into java/src
+
+```
+javac -cp ".:./lib/PDFRenderer-0.9.0-improved.jar:./lib/jbig2.jar:./lib/jzebra.jar:./lib/org.json-20120521.jar" -g -verbose de/westwing/printer/ninja/NinjaPrinter.java
+jar -cvmf META-INF/manifest.mf ../../chrome-extension/host/NinjaPrinter.jar *
+rm ./**/*.class
+
+```
+
+### To run the host application
+
+```
+cd chrome-extension/host/
+java -jar NinjaPrinter.jar
+```
+
