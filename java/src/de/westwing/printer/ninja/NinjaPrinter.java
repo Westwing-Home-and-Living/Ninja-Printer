@@ -76,28 +76,27 @@ public class NinjaPrinter {
 		try {
 			while(true) {
 				debug("Waiting for print requests...");
-				if (this.reader.available() <= 0) {
-					continue;
+				if (this.reader.available() > 0) {
+					break;
 				}
-				debug("Print request receieved.... processing...");
-				
-				// Read message.
-				message = reader.read();
-				debug("Rraw message: " + message);
-				printMessage = JsonMessageParser.getInstance().parse(message);
-				debug("Parsed message: " + printMessage);
-				// Send document to printer.
-				PrinterFactory.factory(printMessage)
-							  .enqueue(printMessage.getDocument())
-							  .print();
-				debug("Document sent to printer");
-				// Send response back.
-				writer.write(this.getSuccessMessage(printMessage));
-				
-				debug("proceesing completed. ");
-				
-				break;
 			}
+
+			debug("Print request receieved.... processing...");
+			
+			// Read message.
+			message = reader.read();
+			debug("Raw message: " + message);
+			printMessage = JsonMessageParser.getInstance().parse(message);
+			debug("Parsed message: " + printMessage);
+			// Send document to printer.
+			PrinterFactory.factory(printMessage)
+							.enqueue(printMessage.getDocument())
+							.print();
+			debug("Document sent to printer");
+			// Send response back.
+			writer.write(this.getSuccessMessage(printMessage));
+			
+			debug("Processing completed. ");
 		} catch (Exception ex) {
 			for (StackTraceElement ste : ex.getStackTrace()) {
 				debug(ste.toString());
