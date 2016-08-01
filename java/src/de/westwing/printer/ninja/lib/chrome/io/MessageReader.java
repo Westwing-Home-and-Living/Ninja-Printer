@@ -31,7 +31,6 @@ public class MessageReader implements MessageReaderInterface {
 		
 		try {
 			do {
-				
 				readBytes = this.ins.read(fullMessage, offset, messageLength - offset);
 				
 				NinjaPrinter.debug("offest:" + offset + ", read bytes:" + readBytes + ", message:" + fullMessage.toString());

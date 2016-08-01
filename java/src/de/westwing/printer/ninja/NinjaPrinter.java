@@ -102,7 +102,6 @@ public class NinjaPrinter {
 				debug(ste.toString());
 			}
 			
-			
 			debug("Exception thrown:" + ex.getMessage());
 			try {
 				this.writer.write(this.getErrorMessage(printMessage, ex));
@@ -222,4 +221,3 @@ public class NinjaPrinter {
 	}
 
 }
-
