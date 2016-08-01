@@ -18,8 +18,6 @@ public class MessageReader implements MessageReaderInterface {
 
 	@Override
 	public MessageInterface read() throws IOException, JSONException {
-		
-		
 		// Read message length
 		byte[] bytes = new byte[4];
 		this.ins.read(bytes, 0, 4);

@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 
-import de.westwing.printer.ninja.lib.Utilities;
-
 /**
  * 
  * @author Omar Tchokhani <omar.tchokhani@westwing.de>
@@ -38,7 +36,6 @@ public class Base64Document implements DocumentInterface {
 	public byte[] toBytes() {
 		if (null == this.decodedContent) {
 			this.decodedContent = Base64.getDecoder().decode(this.base64encodedContent);
-//			this.decodedContent = Utilities.base64decode(this.base64encodedContent);
 		}
 
 		return this.decodedContent;
