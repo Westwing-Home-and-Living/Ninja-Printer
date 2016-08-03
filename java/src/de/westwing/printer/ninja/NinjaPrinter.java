@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Calendar;
 
 import javax.swing.JFrame;
@@ -28,6 +32,9 @@ import javax.swing.SwingUtilities;
  */
 public class NinjaPrinter {
 
+	protected static final String DEBUG_FILE_NAME = "print-debug.log";
+	protected static final int MAX_DEBUG_FILE_SIZE = 5000000;
+	
 	protected MessageReader reader;
 	protected MessageOutput writer;
 	
@@ -69,30 +76,33 @@ public class NinjaPrinter {
 		try {
 			while(true) {
 				debug("Waiting for print requests...");
-				if (this.reader.available() <= 0) {
-					continue;
+				if (this.reader.available() > 0) {
+					break;
 				}
-				debug("Print request receieved.... processing...");
-				
-				// Read message.
-				message = reader.read();
-				debug("Rraw message: " + message);
-				printMessage = JsonMessageParser.getInstance().parse(message);
-				debug("Parsed message: " + printMessage);
-				// Send document to printer.
-				PrinterFactory.factory(printMessage)
-							  .enqueue(printMessage.getDocument())
-							  .print();
-				debug("Document sent to printer");
-				// Send response back.
-				writer.write(this.getSuccessMessage(printMessage));
-				
-				debug("proceesing completed. ");
-				
-				break;
 			}
+
+			debug("Print request receieved.... processing...");
+			
+			// Read message.
+			message = reader.read();
+			debug("Raw message: " + message);
+			printMessage = JsonMessageParser.getInstance().parse(message);
+			debug("Parsed message: " + printMessage);
+			// Send document to printer.
+			PrinterFactory.factory(printMessage)
+							.enqueue(printMessage.getDocument())
+							.print();
+			debug("Document sent to printer");
+			// Send response back.
+			writer.write(this.getSuccessMessage(printMessage));
+			
+			debug("Processing completed. ");
 		} catch (Exception ex) {
-			debug("Exception thrown");
+			for (StackTraceElement ste : ex.getStackTrace()) {
+				debug(ste.toString());
+			}
+			
+			debug("Exception thrown:" + ex.getMessage());
 			try {
 				this.writer.write(this.getErrorMessage(printMessage, ex));
 			} catch (IOException ioex) {
@@ -141,7 +151,38 @@ public class NinjaPrinter {
 	 */
 	public static void debug(String message)
 	{
-		System.err.println(Calendar.getInstance().getTime() + " " + message);
+		try {
+		    Files.write(getDebugFilePath(), (Calendar.getInstance().getTime() + " " + message + '\r' +'\n').getBytes(), StandardOpenOption.APPEND);			
+		} catch (IOException e) {
+			System.err.println("Can not write to file:" + e.getMessage());
+			System.err.println(Calendar.getInstance().getTime() + " " + message);
+		}
+	}
+	
+	/**
+	 * Retrieves the file path of the debug log file
+	 * - creates the file if not exists or file already exceeded the file size limit
+	 * - opens the file for appending otherwise 
+	 * 
+	 * @return
+	 */
+	protected static Path getDebugFilePath()
+	{
+		Path debugFilePath = Paths.get(DEBUG_FILE_NAME);
+
+		try {
+			if (Files.exists(debugFilePath) && Files.size(debugFilePath) < MAX_DEBUG_FILE_SIZE) {
+				return debugFilePath;
+			}
+			
+			if (Files.exists(debugFilePath)) {
+				Files.delete(debugFilePath);				
+			}
+			Files.createFile(debugFilePath);
+		} catch (IOException e) {
+		}
+		
+		return debugFilePath;
 	}
 
 	/**

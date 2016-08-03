@@ -2,9 +2,9 @@ package de.westwing.printer.ninja.lib.chrome.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.json.JSONException;
 
+import de.westwing.printer.ninja.NinjaPrinter;
 import de.westwing.printer.ninja.lib.chrome.message.Message;
 import de.westwing.printer.ninja.lib.chrome.message.MessageInterface;
 
@@ -22,12 +22,29 @@ public class MessageReader implements MessageReaderInterface {
 		byte[] bytes = new byte[4];
 		this.ins.read(bytes, 0, 4);
 		int messageLength = getInt(bytes);
+		byte[] fullMessage = new byte[messageLength];
+		
+		NinjaPrinter.debug("Expected length:" + messageLength + ", message:" + fullMessage);
 
-		// Read the full data into the buffer
-		byte[] data = new byte[messageLength];
-		this.ins.read(data);
-
-		return new Message(new String(data, "UTF-8"));
+		int offset = 0;
+		int readBytes = 0;
+		
+		try {
+			do {
+				readBytes = this.ins.read(fullMessage, offset, messageLength - offset);
+				
+				NinjaPrinter.debug("offest:" + offset + ", read bytes:" + readBytes + ", message:" + fullMessage.toString());
+	
+				offset += readBytes;
+				
+			} while(offset < messageLength);
+		} catch (Exception e) {
+			NinjaPrinter.debug("Someone killed me:" + e.getMessage());
+		}
+		
+		NinjaPrinter.debug("Arrived length:" + fullMessage.toString().length());
+		
+		return new Message(new String(fullMessage, "UTF-8"));
 	
 	}
 	

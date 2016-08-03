@@ -2,8 +2,7 @@ package de.westwing.printer.ninja.lib.document;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-
-import de.westwing.printer.ninja.lib.Utilities;
+import java.util.Base64;
 
 /**
  * 
@@ -36,7 +35,7 @@ public class Base64Document implements DocumentInterface {
 	@Override
 	public byte[] toBytes() {
 		if (null == this.decodedContent) {
-			this.decodedContent = Utilities.base64decode(this.base64encodedContent);
+			this.decodedContent = Base64.getDecoder().decode(this.base64encodedContent);
 		}
 
 		return this.decodedContent;
