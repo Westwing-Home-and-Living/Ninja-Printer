@@ -4,14 +4,16 @@ var NinjaPrinter = {
     events: {
         beforePrint: "ninjaprinter.beforePrint",
         afterPrint: "ninjaprinter.afterPrint",
-        result: "ninjaprinter.result"
+        result: "ninjaprinter.result",
+        versionWarning: "ninjaprinter.versionWarning"
     },
 
     //  Attached cutom events listeners map
     listeners: {
         "ninjaprinter.result": [],
         "ninjaprinter.afterPrint": [],
-        "ninjaprinter.beforePrint": []
+        "ninjaprinter.beforePrint": [],
+        "ninjaprinter.versionWarning": []
     },
 
     // Init Object.
@@ -93,6 +95,11 @@ var NinjaPrinter = {
         document.addEventListener("ninjaprinter.afterPrint", function (evt) {
             console.info("Event is: ", evt);
             NinjaPrinter._executeListeners("ninjaprinter.afterPrint", evt);
+        });
+
+        document.addEventListener("ninjaprinter.versionWarning", function (evt) {
+            console.info("Event is: ", evt);
+            NinjaPrinter._executeListeners("ninjaprinter.versionWarning", evt);
         });
     },
 

@@ -19,7 +19,7 @@
 
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="libpath" includeantruntime="false"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="libpath" includeantruntime="false" />
     </target>
 
     <target name="jar" depends="compile">
@@ -30,10 +30,29 @@
             </zipgroupfileset>
         </jar>
         <sleep seconds="1" />
+        <exec executable="git" outputproperty="build.version" failonerror="true">
+            <arg value="describe"/>
+        </exec>
+        <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
+                       match="&quot;version_name&quot;: &quot;.*&quot;,"
+                       replace="&quot;version_name&quot;: &quot;${build.version}&quot;,"
+                       byline="true"
+        />
+        <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
+                       match="&quot;version&quot;: &quot;.*&quot;,"
+                       replace="&quot;version&quot;: &quot;${build.version}&quot;,"
+                       byline="true"
+        />
+        <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
+                       match="&quot;version&quot;: &quot;(\d+\.\d+\.\d+).*&quot;,"
+                       replace="&quot;version&quot;: &quot;\1&quot;,"
+                       byline="true"
+        />
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <zipfileset src="${build.dir}/deps.jar" excludes="META-INF/*.SF" />
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Build-Version" value="${build.version}" />
             </manifest>
         </jar>
     </target>
