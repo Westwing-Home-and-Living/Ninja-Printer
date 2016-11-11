@@ -5,7 +5,7 @@ var NinjaPrinter = {
         beforePrint: "ninjaprinter.beforePrint",
         afterPrint: "ninjaprinter.afterPrint",
         result: "ninjaprinter.result",
-        versionWarning: "ninjaprinter.versionWarning"
+        versionWarning: "ninjaprinter.versionWarning",
     },
 
     //  Attached cutom events listeners map
@@ -13,7 +13,7 @@ var NinjaPrinter = {
         "ninjaprinter.result": [],
         "ninjaprinter.afterPrint": [],
         "ninjaprinter.beforePrint": [],
-        "ninjaprinter.versionWarning": []
+        "ninjaprinter.versionWarning": [],
     },
 
     // Init Object.

@@ -1,11 +1,30 @@
+/**
+* Class representing a Semantic Versioning object.
+*/
 class SemVer {
+        /**
+        * Parses a version string and populates the object.
+        * Important: Your tag names need to follow the Semantic Version standard
+        * or else this will not work.
+        *
+        * @param {string} The output of the `git describe` command output
+        */
         constructor(version) {
-            let semVerRegex = /(\d)+\.(\d)+\.(\d)+\-?\d*\-?g?([0-9a-f]*)/;
+            /**
+            * A pattern representing the `git describe` command output
+            * - The first `(\d+)` matches the major version
+            * - The second `(\d+)` matches the minor version
+            * - The third `(\d+)` matches the patch version
+            * - `\-?\d*\-?g?` (optional) matches the number of commits after
+            *   the tag and the git vcs identifier
+            * - `([0-9a-f]*)` (optional) matches the abbreviated object name
+            *   of the commit of HEAD
+            */
+            let semVerRegex = /(\d+)\.(\d+)\.(\d+)\-?\d*\-?g?([0-9a-f]*)/;
 
             let result = version.match(semVerRegex);
 
-            if (result === null)
-            {
+            if (result === null) {
                 this.major  = null;
                 this.minor  = null;
                 this.patch  = null;
@@ -18,18 +37,30 @@ class SemVer {
             this.commit = parseInt(result[4]);
         }
 
+        /**
+        * @return {string}
+        */
         get Major() {
             return this.major;
         }
 
+        /**
+        * @return {string}
+        */
         get Minor() {
             return this.minor;
         }
 
+        /**
+        * @return {string}
+        */
         get Patch() {
             return this.patch;
         }
 
+        /**
+        * @return {string}
+        */
         get Commit() {
             return this.commit || '';
         }
@@ -115,8 +146,8 @@ var NinjaPrinterCore = {
         let difference = extensionVersion.compare(hostVersion);
 
         if (difference !== 0) {
-            let message = `The NinjaPrinter extension and host versions do not match.\n
-            The extension version is ${difference < 0 ? 'lower' : 'higher'} than the host.`;
+            let message = `The NinjaPrinter extension and host versions do not match.\n` +
+                          `The extension version is ${difference < 0 ? 'lower' : 'higher'} than the host.`;
 
             let customEvent = new CustomEvent("ninjaprinter.versionWarning", {
                 detail: {

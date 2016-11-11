@@ -30,19 +30,37 @@
             </zipgroupfileset>
         </jar>
         <sleep seconds="1" />
+
+        <!-- Executes `git describe` and stores the output in the build.version property -->
         <exec executable="git" outputproperty="build.version" failonerror="true">
             <arg value="describe"/>
         </exec>
+        <!--
+           Sets the value of `version_name` to the value of the `build.version` property
+           in the chrome extension manifest file.
+         -->
         <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
                        match="&quot;version_name&quot;: &quot;.*&quot;,"
                        replace="&quot;version_name&quot;: &quot;${build.version}&quot;,"
                        byline="true"
         />
+
+        <!--
+           Sets the value of `version` to the value of the `build.version` property
+           in the chrome extension manifest file.
+         -->
         <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
                        match="&quot;version&quot;: &quot;.*&quot;,"
                        replace="&quot;version&quot;: &quot;${build.version}&quot;,"
                        byline="true"
         />
+
+        <!--
+           Grabs the value of the `version` property in the chrome extension manifest file
+           and then replaces the value with just the Semantic Version bits, discarding the rest.
+           This is because the `version` property can only contain numbers separated by dots.
+           (This is a hacky way of doing it)
+         -->
         <replaceregexp file="../java/../chrome-extension/browser/manifest.json"
                        match="&quot;version&quot;: &quot;(\d+\.\d+\.\d+).*&quot;,"
                        replace="&quot;version&quot;: &quot;\1&quot;,"
