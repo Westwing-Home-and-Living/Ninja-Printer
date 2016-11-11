@@ -7,7 +7,7 @@ class SemVer {
         * Important: Your tag names need to follow the Semantic Version standard
         * or else this will not work.
         *
-        * @param {string} The output of the `git describe` command output
+        * @param {string} version The output of the `git describe` command output
         */
         constructor(version) {
             /**
