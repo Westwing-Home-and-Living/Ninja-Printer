@@ -58,7 +58,10 @@ public class LabelPrinter extends AbstractPrinter {
 	 */
 	protected void disableConsoleLogging() {
 		Logger rootLogger = Logger.getLogger("");
-		rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+
+		if (rootLogger.getHandlers().length > 0) {
+			rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+		}
 	}
 
 	/**

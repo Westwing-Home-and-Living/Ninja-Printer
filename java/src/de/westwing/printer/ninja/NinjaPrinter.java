@@ -46,7 +46,14 @@ public class NinjaPrinter {
 		this.reader = ins;
 		this.writer =  out;
 	}
-	
+
+	/**
+	 * @return PrinterFactory
+	 */
+	protected PrinterFactory getPrinterFactory() {
+		return new PrinterFactory();
+	}
+
 	/**
 	 * Usage: java -jar NinjaPrinter.jar [--debug=on]
 	 * 
@@ -89,7 +96,7 @@ public class NinjaPrinter {
 			printMessage = JsonMessageParser.getInstance().parse(message);
 			debug("Parsed message: " + printMessage);
 			// Send document to printer.
-			PrinterFactory.factory(printMessage)
+			getPrinterFactory().factory(printMessage)
 							.enqueue(printMessage.getDocument())
 							.print();
 			debug("Document sent to printer");

@@ -7,14 +7,14 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * @author Omar Tchokhani <omar.tchokhani@westwing.de>
  */
-public final class Utilities {
-
+public class Utilities
+{
 	/**
 	 * @param printerName
 	 * 
 	 * @throws PrintException
 	 */
-	public static PrintService lookupPrinterServiceByName(String printerName) throws Exception {
+	public PrintService lookupPrinterServiceByName(String printerName) throws Exception {
 		// list of printers
 		PrintService[] services = PrinterJob.lookupPrintServices();
 
