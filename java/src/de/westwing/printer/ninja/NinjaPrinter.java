@@ -64,7 +64,7 @@ public class NinjaPrinter {
 	/**
 	 * @param utility
 	 */
-	private void setUtility(Utilities utility) {
+	public void setUtility(Utilities utility) {
 		this.utility = utility;
 	}
 	
