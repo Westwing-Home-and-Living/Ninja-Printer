@@ -50,8 +50,8 @@ public class PrinterFactory {
 	 * @throws PrintException
 	 * @throws Exception
 	 */
-	public static PrinterInterface factory(JsonPrintMessageInterface printMessage) throws PrintException, Exception{
-		PrintService printService = Utilities.lookupPrinterServiceByName(printMessage.getPrinterName());
+	public static PrinterInterface factory(JsonPrintMessageInterface printMessage, Utilities utility) throws PrintException, Exception{
+		PrintService printService = utility.lookupPrinterServiceByName(printMessage.getPrinterName());
 		
 		return factory(printMessage.getPrinterType(), printService);
 	}
