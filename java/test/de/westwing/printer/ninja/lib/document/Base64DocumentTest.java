@@ -16,7 +16,7 @@ public class Base64DocumentTest {
         DocumentInterface doc = new Base64Document("SGVsbG8sIOS4lueVjCE=");
 
         String actualMessage = doc.toRawString();
-        
+
         assertEquals(expectedMessage, actualMessage);
     }
     

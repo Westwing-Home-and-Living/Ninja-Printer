@@ -8,10 +8,13 @@ import de.westwing.printer.ninja.lib.chrome.message.MessageInterface;
 import de.westwing.printer.ninja.lib.message.JsonMessageParser;
 import de.westwing.printer.ninja.lib.message.JsonPrintMessageInterface;
 
+
+import de.westwing.printer.ninja.lib.document.ByteDocumentFactory;
+import de.westwing.printer.ninja.lib.document.Base64DocumentFactory;
+
 import java.awt.BorderLayout;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
@@ -86,7 +89,11 @@ public class NinjaPrinter {
 			// Read message.
 			message = reader.read();
 			debug("Raw message: " + message);
-			printMessage = JsonMessageParser.getInstance().parse(message);
+
+			ByteDocumentFactory byteDocumentFactory = new ByteDocumentFactory();
+			Base64DocumentFactory base64DocumentFactory = new Base64DocumentFactory();
+
+			printMessage = JsonMessageParser.getInstance(byteDocumentFactory, base64DocumentFactory).getPrintMessage(message);
 			debug("Parsed message: " + printMessage);
 			// Send document to printer.
 			PrinterFactory.factory(printMessage)
