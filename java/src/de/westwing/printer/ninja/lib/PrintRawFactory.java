@@ -4,9 +4,9 @@ import javax.print.PrintService;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @author Omar Tchokhani <omar.tchokhani@westwing.de>
+ * @author Serhii Atiahin <serhii.atiahin@westwing.de>
  */
-public class PrintRawFactory {
+class PrintRawFactory {
 
     /**
      * @param printService

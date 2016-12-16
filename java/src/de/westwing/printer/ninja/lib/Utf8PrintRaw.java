@@ -8,7 +8,7 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @author o.tchokhani
+ * @author Omar Tchokhani <omar.tchokhani@westwing.de>
  */
 class Utf8PrintRaw extends PrintRaw {
 
