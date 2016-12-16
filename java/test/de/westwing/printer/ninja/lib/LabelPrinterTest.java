@@ -72,10 +72,10 @@ public class LabelPrinterTest {
         inDocOrder.verify(docMock1).toRawString();
         inDocOrder.verify(docMock2).toRawString();
 
-        InOrder inPrintWarOrder = inOrder(printRawMock1, printRawMock2);
+        InOrder inPrintRawOrder = inOrder(printRawMock1, printRawMock2);
 
-        inPrintWarOrder.verify(printRawMock1).print();
-        inPrintWarOrder.verify(printRawMock2).print();
+        inPrintRawOrder.verify(printRawMock1).print();
+        inPrintRawOrder.verify(printRawMock2).print();
     }
 
     @Test(expected = PrintException.class)
