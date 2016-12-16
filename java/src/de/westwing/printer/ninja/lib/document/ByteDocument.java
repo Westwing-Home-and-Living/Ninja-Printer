@@ -10,6 +10,9 @@ public class ByteDocument implements DocumentInterface {
 
 	protected byte[] content;
 
+	/**
+	 * @param documentData
+	 */
 	public ByteDocument(byte[] documentData) {
 		this.content = documentData;
 	}
@@ -28,6 +31,7 @@ public class ByteDocument implements DocumentInterface {
 	public byte[] toBytes() {
 		return this.content;
 	}
+
 
 	@Override
 	public ByteBuffer toByteBuffer() {
