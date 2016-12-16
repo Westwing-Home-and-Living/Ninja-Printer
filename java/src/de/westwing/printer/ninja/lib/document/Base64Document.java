@@ -3,6 +3,7 @@ package de.westwing.printer.ninja.lib.document;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Base64;
+import java.util.Base64.Decoder;
 
 /**
  * 
@@ -15,11 +16,31 @@ public class Base64Document implements DocumentInterface {
 
 	protected byte[] decodedContent;
 
+	protected Decoder decoder;
+	
 	/**
 	 * @param base64Encoded
 	 */
 	public Base64Document(String base64Encoded) {
 		this.base64encodedContent = base64Encoded;
+	}
+
+	/**
+	 * @return Decoder
+	 */
+	public Decoder getDecoder() {
+		if (null == this.decoder) {
+			this.decoder = Base64.getDecoder();
+		}
+		
+		return this.decoder;
+	}
+
+	/**
+	 * @param decoder
+	 */
+	public void setDecoder(Decoder decoder) {
+		this.decoder = decoder;
 	}
 
 	@Override
@@ -35,7 +56,7 @@ public class Base64Document implements DocumentInterface {
 	@Override
 	public byte[] toBytes() {
 		if (null == this.decodedContent) {
-			this.decodedContent = Base64.getDecoder().decode(this.base64encodedContent);
+			this.decodedContent = this.getDecoder().decode(this.base64encodedContent);
 		}
 
 		return this.decodedContent;
