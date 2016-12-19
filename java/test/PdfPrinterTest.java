@@ -13,44 +13,51 @@ import java.io.IOException;
 import static org.mockito.Mockito.*;
 
 public class PdfPrinterTest {
-    private PDFFileFactory pdfFileFactory;
-    private PDFPrintA4PageFactory pdfPrintA4PageFactory;
-    private ByteDocument doc1;
-    private PrintService printService;
-    private PrinterJob printerJob;
+    private PDFFileFactory pdfFileFactoryMock;
+    private PDFPrintA4PageFactory pdfPrintA4PageFactoryMock;
+    private ByteDocument docMock;
+    private PrintService printServiceMock;
+    private PrinterJob printerJobMock;
+    private PdfPrinter sut;
 
     @Before
     public void setUp() throws IOException{
-        String expectedMessage = "Hello!";
+        String expectedMessage = "dummy!";
 
-        pdfFileFactory = Mockito.mock(PDFFileFactory.class);
-        pdfPrintA4PageFactory = Mockito.mock(PDFPrintA4PageFactory.class);
-        doc1 = new ByteDocument(expectedMessage.getBytes());
-        printService = Mockito.mock(PrintService.class);
-        printerJob = Mockito.mock(PrinterJob.class);
+        pdfFileFactoryMock = Mockito.mock(PDFFileFactory.class);
+        pdfPrintA4PageFactoryMock = Mockito.mock(PDFPrintA4PageFactory.class);
+        docMock = new ByteDocument(expectedMessage.getBytes());
+        printServiceMock = Mockito.mock(PrintService.class);
+        printerJobMock = Mockito.mock(PrinterJob.class);
 
         PDFFile pdfFile = Mockito.mock(PDFFile.class);
         PDFPrintA4Page pdfPrintA4Page = Mockito.mock(PDFPrintA4Page.class);
 
-        when(pdfFileFactory.factory(doc1)).thenReturn(pdfFile);
-        when(pdfPrintA4PageFactory.factory(pdfFile)).thenReturn(pdfPrintA4Page);
+        sut = new PdfPrinter(printServiceMock, printerJobMock, pdfFileFactoryMock, pdfPrintA4PageFactoryMock);
 
-        when(printerJob.defaultPage()).thenReturn(Mockito.mock(PageFormat.class));
-        when(printerJob.validatePage(printerJob.defaultPage())).thenReturn(Mockito.mock(PageFormat.class));
+        when(pdfFileFactoryMock.factory(docMock)).thenReturn(pdfFile);
+        when(pdfPrintA4PageFactoryMock.factory(pdfFile)).thenReturn(pdfPrintA4Page);
+
+        when(printerJobMock.defaultPage()).thenReturn(Mockito.mock(PageFormat.class));
+        when(printerJobMock.validatePage(printerJobMock.defaultPage())).thenReturn(Mockito.mock(PageFormat.class));
     }
 
     @Test
-    public void testBasicPrintingWorkflowOneDocument() throws Exception {
-        PdfPrinter pdfPrinter = new PdfPrinter(printService, printerJob, pdfFileFactory, pdfPrintA4PageFactory);
-        pdfPrinter.enqueue(doc1);
-        pdfPrinter.print();
+    public void testPrintSuccess() throws Exception {
+        sut.enqueue(docMock);
+        sut.print();
 
-        verify(printerJob, times(1)).print(null);
+        verify(printerJobMock, times(1)).print(null);
     }
 
     @Test(expected=PrintException.class)
-    public void testBasicPrintingWorkflowNoDocuments() throws Exception {
-        PdfPrinter pdfPrinter = new PdfPrinter(printService, printerJob, pdfFileFactory, pdfPrintA4PageFactory);
-        pdfPrinter.print();
+    public void testPrintFailsOnEmptyDocument() throws Exception {
+        sut.print();
+    }
+
+    @Test(expected=PrintException.class)
+    public void testPrintFailsWithPrintException() throws Exception {
+        when(printerJobMock.defaultPage()).thenThrow(Exception.class);
+        sut.print();
     }
 }
