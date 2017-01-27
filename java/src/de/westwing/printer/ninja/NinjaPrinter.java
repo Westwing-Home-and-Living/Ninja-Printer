@@ -1,6 +1,7 @@
 package de.westwing.printer.ninja;
 
 import de.westwing.printer.ninja.lib.PrinterFactory;
+import de.westwing.printer.ninja.lib.Utilities;
 import de.westwing.printer.ninja.lib.chrome.io.MessageOutput;
 import de.westwing.printer.ninja.lib.chrome.io.MessageReader;
 import de.westwing.printer.ninja.lib.chrome.message.Message;
@@ -9,16 +10,14 @@ import de.westwing.printer.ninja.lib.message.JsonMessageParser;
 import de.westwing.printer.ninja.lib.message.JsonPrintMessageInterface;
 
 import java.awt.BorderLayout;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Calendar;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -37,14 +36,18 @@ public class NinjaPrinter {
 	
 	protected MessageReader reader;
 	protected MessageOutput writer;
+
+	protected String buildVersion;
 	
 	/**
-	 * @param ins
-	 * @param out
+	 * @param reader
+	 * @param writer
+	 * @param buildVersion
 	 */
-	public NinjaPrinter(MessageReader ins, MessageOutput out) {
-		this.reader = ins;
-		this.writer =  out;
+	public NinjaPrinter(MessageReader reader, MessageOutput writer, String buildVersion) {
+		this.reader = reader;
+		this.writer =  writer;
+		this.buildVersion = buildVersion;
 	}
 	
 	/**
@@ -57,11 +60,12 @@ public class NinjaPrinter {
 		if (args.length >= 1 && args[0].equalsIgnoreCase("--debug=on")) {
 			showDebugWindow();
 		}
-		
+
 		MessageReader reader = new MessageReader(new BufferedInputStream(System.in));
 		MessageOutput writer = new MessageOutput(System.out);
-		
-		new NinjaPrinter(reader, writer).start();
+
+		String buildVersion = Utilities.getBuildVersion();
+		new NinjaPrinter(reader, writer, buildVersion).start();
 	}
 	
 	/**
@@ -69,7 +73,7 @@ public class NinjaPrinter {
 	 */
 	public void start() {
 		debug("START");
-		
+
 		JsonPrintMessageInterface printMessage = null;
 		MessageInterface message = null;
 		
@@ -121,7 +125,8 @@ public class NinjaPrinter {
 	 */
 	protected MessageInterface getSuccessMessage(JsonPrintMessageInterface printMessage)
 	{
-		String response = "{\"success\":true,\"message\":\"success\", \"requestId\":\"" + printMessage.getRequestId() + "\"}";
+		String response = "{\"success\":true,\"message\":\"success\", \"requestId\":\"" + printMessage.getRequestId() +
+						  "\",\"version\":\"" + this.buildVersion + "\"}";
 		MessageInterface responseMessage = new Message(response);
 		
 		debug("Response success: " + responseMessage);
@@ -138,7 +143,8 @@ public class NinjaPrinter {
 	{ 
 		String requestId = printMessage == null ? null : printMessage.getRequestId();
 		
-		String response = "{\"success\":false,\"message\":\"" + ex.getMessage() + "\", \"requestId\":\"" + requestId + "\"}";
+		String response = "{\"success\":false,\"message\":\"" + ex.getMessage() + "\", \"requestId\":\"" + requestId +
+						  "\",\"version\":\"" + this.buildVersion + "\"}";
 		MessageInterface responseMessage = new Message(response);
 		
 		debug("Response error: " + responseMessage);

@@ -1,7 +1,9 @@
 {
     "name": "Ninja Printer",
-    "version": "1.0.5",
+    "version": "1.0.3",
+    "version_name": "1.0.3-16-g7b5e2fd",
     "manifest_version": 2,
+    "minimum_chrome_version": "22",
     "description": "Westwing Printing solution",
     "background": {
         "scripts": [
