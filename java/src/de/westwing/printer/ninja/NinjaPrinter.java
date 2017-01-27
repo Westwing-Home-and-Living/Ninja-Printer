@@ -51,6 +51,13 @@ public class NinjaPrinter {
 	}
 
 	/**
+	 * @return PrinterFactory
+	 */
+	protected PrinterFactory getPrinterFactory() {
+		return new PrinterFactory();
+	}
+
+	/**
 	 * @return Utilities
 	 */
 	public Utilities getUtility() {
@@ -110,7 +117,8 @@ public class NinjaPrinter {
 			printMessage = JsonMessageParser.getInstance().parse(message);
 			debug("Parsed message: " + printMessage);
 			// Send document to printer.
-			PrinterFactory.factory(printMessage, this.getUtility())
+
+			getPrinterFactory().factory(printMessage, this.getUtility)
 							.enqueue(printMessage.getDocument())
 							.print();
 			debug("Document sent to printer");

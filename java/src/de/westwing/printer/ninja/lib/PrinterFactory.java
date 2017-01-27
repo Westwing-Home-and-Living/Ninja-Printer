@@ -10,6 +10,7 @@ import de.westwing.printer.ninja.lib.message.JsonPrintMessageInterface;
  *
  */
 public class PrinterFactory {
+	protected Utilities utilitiesService;
 
 	public enum PrinterType {
 		LABEL("label"),
@@ -25,14 +26,34 @@ public class PrinterFactory {
 			return type;
 		}
 	}
-	
+
+	/**
+	 * @return Utilities
+	 */
+	protected Utilities getUtilitiesService() {
+		if (utilitiesService == null) {
+			utilitiesService = new Utilities();
+		}
+
+		return utilitiesService;
+	}
+
+	/**
+	 * @param service
+	 */
+	public void setUtilitiesService(Utilities service) {
+		utilitiesService = service;
+	}
+
 	/**
 	 * @param printerType
 	 * @param printService
+	 *
 	 * @return A Concrete PrinterInterface object.
+	 *
 	 * @throws PrintException
 	 */
-	public static PrinterInterface factory(String printerType, PrintService printService) throws PrintException {
+	public PrinterInterface factory(String printerType, PrintService printService) throws PrintException {
 		if (PrinterType.LABEL.toString().equalsIgnoreCase(printerType)) {
 			PrintRawFactory printRawFactory = new PrintRawFactory();
 			return new LabelPrinter(printService, printRawFactory);
@@ -47,11 +68,14 @@ public class PrinterFactory {
 	
 	/**
 	 * @param printMessage
+	 *
 	 * @return A Concrete PrinterInterface object.
+	 *
 	 * @throws PrintException
 	 * @throws Exception
 	 */
-	public static PrinterInterface factory(JsonPrintMessageInterface printMessage, Utilities utility) throws PrintException, Exception{
+	public PrinterInterface factory(JsonPrintMessageInterface printMessage, Utilities utility) throws PrintException, Exception
+	{
 		PrintService printService = utility.lookupPrinterServiceByName(printMessage.getPrinterName());
 		
 		return factory(printMessage.getPrinterType(), printService);

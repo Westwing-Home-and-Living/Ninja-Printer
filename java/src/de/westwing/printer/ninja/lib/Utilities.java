@@ -6,8 +6,8 @@ import javax.print.PrintService;
 /**
  * @author Omar Tchokhani <omar.tchokhani@westwing.de>
  */
-public class Utilities {
-
+public class Utilities
+{
 	protected PrintService[] printServices;
 
 	/**
