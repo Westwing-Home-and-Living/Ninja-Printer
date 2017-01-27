@@ -1,11 +1,8 @@
 package de.westwing.printer.ninja.lib;
 
-import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
-import javax.print.DocFlavor;
 import javax.print.PrintService;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 
 import jzebra.PrintRaw;
 import de.westwing.printer.ninja.NinjaPrinter;
@@ -18,12 +15,14 @@ import de.westwing.printer.ninja.lib.document.DocumentInterface;
  */
 public class LabelPrinter extends AbstractPrinter {
 
+	private PrintRawFactory printRawFactory;
 	/**
 	 * @param printService
 	 */
-	public LabelPrinter(PrintService printService) {
+	public LabelPrinter(PrintService printService, PrintRawFactory printRawFactory) {
 		this.setPrintService(printService);
 		this.disableConsoleLogging();
+		this.printRawFactory = printRawFactory;
 	}
 
 	@Override
@@ -41,7 +40,7 @@ public class LabelPrinter extends AbstractPrinter {
 				
 				String temp = document.toRawString();
 				NinjaPrinter.debug("RawString in print:" + temp);
-				PrintRaw p = new Utf8PrintRaw(this.printService, temp);
+				PrintRaw p = this.printRawFactory.createUtf8PrintRaw(this.printService, temp);
 				NinjaPrinter.debug("UTF-8 print row:" + p.toString());
 				p.print();
 				NinjaPrinter.debug("Print done");
@@ -58,24 +57,10 @@ public class LabelPrinter extends AbstractPrinter {
 	 */
 	protected void disableConsoleLogging() {
 		Logger rootLogger = Logger.getLogger("");
-		rootLogger.removeHandler(rootLogger.getHandlers()[0]);
-	}
 
-	/**
-	 * 
-	 * @author o.tchokhani
-	 *
-	 */
-	public static class Utf8PrintRaw extends PrintRaw {
-		/**
-		 * 
-		 * @param ps
-		 * @param printString
-		 * @throws UnsupportedEncodingException
-		 */
-		public Utf8PrintRaw(PrintService ps, String printString) throws UnsupportedEncodingException {
-			super(ps, printString, DocFlavor.BYTE_ARRAY.AUTOSENSE, null, new HashPrintRequestAttributeSet(),
-					java.nio.charset.Charset.forName("UTF-8"));
+		if (rootLogger.getHandlers().length > 0) {
+			rootLogger.removeHandler(rootLogger.getHandlers()[0]);
 		}
 	}
+
 }

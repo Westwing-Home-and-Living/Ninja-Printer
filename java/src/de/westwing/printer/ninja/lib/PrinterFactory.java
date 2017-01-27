@@ -34,7 +34,8 @@ public class PrinterFactory {
 	 */
 	public static PrinterInterface factory(String printerType, PrintService printService) throws PrintException {
 		if (PrinterType.LABEL.toString().equalsIgnoreCase(printerType)) {
-			return new LabelPrinter(printService);
+			PrintRawFactory printRawFactory = new PrintRawFactory();
+			return new LabelPrinter(printService, printRawFactory);
 		}
 
 		if (PrinterType.PDF.toString().equalsIgnoreCase(printerType)) {
