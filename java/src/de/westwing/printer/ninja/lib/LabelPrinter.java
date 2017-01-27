@@ -16,6 +16,9 @@ import de.westwing.printer.ninja.lib.document.DocumentInterface;
 public class LabelPrinter extends AbstractPrinter {
 
 	private PrintRawFactory printRawFactory;
+
+	protected Debug debugService;
+
 	/**
 	 * @param printService
 	 */
@@ -32,21 +35,21 @@ public class LabelPrinter extends AbstractPrinter {
 		}
 
 		try {
-			NinjaPrinter.debug("DocQueue:" + this.documentsQueue.size());
-			NinjaPrinter.debug("DocQueue:" + this.documentsQueue.toString());
+			getDebugService().print("DocQueue:" + this.documentsQueue.size());
+			getDebugService().print("DocQueue:" + this.documentsQueue.toString());
 			
 			for (DocumentInterface document : this.documentsQueue) {
-				NinjaPrinter.debug("Print begins");
+				getDebugService().print("Print begins");
 				
 				String temp = document.toRawString();
 				NinjaPrinter.debug("RawString in print:" + temp);
 				PrintRaw p = this.printRawFactory.createUtf8PrintRaw(this.printService, temp);
 				NinjaPrinter.debug("UTF-8 print row:" + p.toString());
 				p.print();
-				NinjaPrinter.debug("Print done");
+				getDebugService().print("Print done");
 			}
 		} catch (Exception ex) {
-			NinjaPrinter.debug(ex.getMessage());
+			getDebugService().print(ex.getMessage());
 			throw new PrintException(ex.getMessage(), ex);
 		}
 	}
@@ -63,4 +66,14 @@ public class LabelPrinter extends AbstractPrinter {
 		}
 	}
 
+	/**
+	 * @return Debug
+	 */
+	protected Debug getDebugService() {
+		if (debugService == null) {
+			debugService = new Debug();
+		}
+
+		return debugService;
+	}
 }

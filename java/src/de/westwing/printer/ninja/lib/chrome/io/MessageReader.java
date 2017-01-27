@@ -2,6 +2,8 @@ package de.westwing.printer.ninja.lib.chrome.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import de.westwing.printer.ninja.lib.Debug;
 import org.json.JSONException;
 
 import de.westwing.printer.ninja.NinjaPrinter;
@@ -11,6 +13,7 @@ import de.westwing.printer.ninja.lib.chrome.message.MessageInterface;
 public class MessageReader implements MessageReaderInterface {
 
 	protected InputStream ins;
+	protected Debug debugService;
 
 	public MessageReader(InputStream ins) {
 		this.ins = ins;
@@ -23,8 +26,8 @@ public class MessageReader implements MessageReaderInterface {
 		this.ins.read(bytes, 0, 4);
 		int messageLength = getInt(bytes);
 		byte[] fullMessage = new byte[messageLength];
-		
-		NinjaPrinter.debug("Expected length:" + messageLength + ", message:" + fullMessage);
+
+		getDebugService().print("Expected length:" + messageLength + ", message:" + fullMessage);
 
 		int offset = 0;
 		int readBytes = 0;
@@ -32,17 +35,17 @@ public class MessageReader implements MessageReaderInterface {
 		try {
 			do {
 				readBytes = this.ins.read(fullMessage, offset, messageLength - offset);
-				
-				NinjaPrinter.debug("offest:" + offset + ", read bytes:" + readBytes + ", message:" + fullMessage.toString());
+
+				getDebugService().print("offest:" + offset + ", read bytes:" + readBytes + ", message:" + fullMessage.toString());
 	
 				offset += readBytes;
 				
 			} while(offset < messageLength);
 		} catch (Exception e) {
-			NinjaPrinter.debug("Someone killed me:" + e.getMessage());
+			getDebugService().print("Someone killed me:" + e.getMessage());
 		}
-		
-		NinjaPrinter.debug("Arrived length:" + fullMessage.toString().length());
+
+		getDebugService().print("Arrived length:" + fullMessage.toString().length());
 		
 		return new Message(new String(fullMessage, "UTF-8"));
 	
@@ -72,5 +75,16 @@ public class MessageReader implements MessageReaderInterface {
 				(bytes[2] << 16) & 0x00ff0000 | 
 				(bytes[1] << 8) & 0x0000ff00 |
 				(bytes[0] << 0) & 0x000000ff;
+	}
+
+	/**
+	 * @return Debug
+	 */
+	protected Debug getDebugService() {
+		if (debugService == null) {
+			debugService = new Debug();
+		}
+
+		return debugService;
 	}
 }
