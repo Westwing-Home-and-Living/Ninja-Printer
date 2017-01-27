@@ -55,11 +55,12 @@ public class PrinterFactory {
 	 */
 	public PrinterInterface factory(String printerType, PrintService printService) throws PrintException {
 		if (PrinterType.LABEL.toString().equalsIgnoreCase(printerType)) {
-			return new LabelPrinter(printService);
+			PrintRawFactory printRawFactory = new PrintRawFactory();
+			return new LabelPrinter(printService, printRawFactory);
 		}
 
 		if (PrinterType.PDF.toString().equalsIgnoreCase(printerType)) {
-			return new PdfPrinter(printService);
+			return new PdfPrinter(printService, new PDFFileFactory(), new PDFPrintA4PageFactory());
 		}
 
 		throw new PrintException("Printer Type not supported: " + printerType);
@@ -73,8 +74,9 @@ public class PrinterFactory {
 	 * @throws PrintException
 	 * @throws Exception
 	 */
-	public PrinterInterface factory(JsonPrintMessageInterface printMessage) throws PrintException, Exception {
-		PrintService printService = getUtilitiesService().lookupPrinterServiceByName(printMessage.getPrinterName());
+	public PrinterInterface factory(JsonPrintMessageInterface printMessage, Utilities utility) throws PrintException, Exception
+	{
+		PrintService printService = utility.lookupPrinterServiceByName(printMessage.getPrinterName());
 		
 		return factory(printMessage.getPrinterType(), printService);
 	}

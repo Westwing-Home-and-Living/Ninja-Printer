@@ -1,6 +1,7 @@
 package de.westwing.printer.ninja;
 
 import de.westwing.printer.ninja.lib.PrinterFactory;
+import de.westwing.printer.ninja.lib.Utilities;
 import de.westwing.printer.ninja.lib.chrome.io.MessageOutput;
 import de.westwing.printer.ninja.lib.chrome.io.MessageReader;
 import de.westwing.printer.ninja.lib.chrome.message.Message;
@@ -37,6 +38,8 @@ public class NinjaPrinter {
 	
 	protected MessageReader reader;
 	protected MessageOutput writer;
+
+	protected Utilities utility;
 	
 	/**
 	 * @param ins
@@ -54,6 +57,24 @@ public class NinjaPrinter {
 		return new PrinterFactory();
 	}
 
+	/**
+	 * @return Utilities
+	 */
+	public Utilities getUtility() {
+		if (null == this.utility) {
+			this.setUtility(new Utilities());
+		}
+
+		return this.utility;
+	}
+
+	/**
+	 * @param utility
+	 */
+	public void setUtility(Utilities utility) {
+		this.utility = utility;
+	}
+	
 	/**
 	 * Usage: java -jar NinjaPrinter.jar [--debug=on]
 	 * 
@@ -96,7 +117,8 @@ public class NinjaPrinter {
 			printMessage = JsonMessageParser.getInstance().parse(message);
 			debug("Parsed message: " + printMessage);
 			// Send document to printer.
-			getPrinterFactory().factory(printMessage)
+
+			getPrinterFactory().factory(printMessage, this.getUtility)
 							.enqueue(printMessage.getDocument())
 							.print();
 			debug("Document sent to printer");

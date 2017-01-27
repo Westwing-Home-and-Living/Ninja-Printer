@@ -2,13 +2,14 @@ package de.westwing.printer.ninja.lib;
 
 import java.awt.print.PrinterJob;
 import javax.print.PrintService;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * @author Omar Tchokhani <omar.tchokhani@westwing.de>
  */
 public class Utilities
 {
+	protected PrintService[] printServices;
+
 	/**
 	 * @param printerName
 	 * 
@@ -16,7 +17,7 @@ public class Utilities
 	 */
 	public PrintService lookupPrinterServiceByName(String printerName) throws Exception {
 		// list of printers
-		PrintService[] services = PrinterJob.lookupPrintServices();
+		PrintService[] services = this.getPrintServices();
 
 		for (PrintService service : services) {
 			if (service.getName().contains(printerName)) {
@@ -25,5 +26,23 @@ public class Utilities
 		}
 
 		throw new PrintException("Printer not found: " + printerName);
+	}
+
+	/**
+	 * @return PrintService[]
+	 */
+	protected PrintService[] getPrintServices() {
+		if (null == this.printServices) {
+			this.printServices = PrinterJob.lookupPrintServices();
+		}
+
+		return this.printServices;
+	}
+
+	/**
+	 * @param printServices
+	 */
+	public void setPrintServices(PrintService[] printServices) {
+		this.printServices = printServices;
 	}
 }
