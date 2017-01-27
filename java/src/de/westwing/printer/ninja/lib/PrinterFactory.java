@@ -39,7 +39,7 @@ public class PrinterFactory {
 		}
 
 		if (PrinterType.PDF.toString().equalsIgnoreCase(printerType)) {
-			return new PdfPrinter(printService);
+			return new PdfPrinter(printService, new PDFFileFactory(), new PDFPrintA4PageFactory());
 		}
 
 		throw new PrintException("Printer Type not supported: " + printerType);
