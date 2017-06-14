@@ -114,7 +114,7 @@ public class NinjaPrinter {
 			getDebugService().print("Parsed message: " + printMessage);
 			// Send document to printer.
 
-			getPrinterFactory().factory(printMessage, this.getUtility)
+			getPrinterFactory().factory(printMessage, this.getUtility())
 							.enqueue(printMessage.getDocument())
 							.print();
 			getDebugService().print("Document sent to printer");

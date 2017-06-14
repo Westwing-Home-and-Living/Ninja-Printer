@@ -42,9 +42,9 @@ public class LabelPrinter extends AbstractPrinter {
 				getDebugService().print("Print begins");
 				
 				String temp = document.toRawString();
-				NinjaPrinter.debug("RawString in print:" + temp);
+				getDebugService().print("RawString in print:" + temp);
 				PrintRaw p = this.printRawFactory.createUtf8PrintRaw(this.printService, temp);
-				NinjaPrinter.debug("UTF-8 print row:" + p.toString());
+				getDebugService().print("UTF-8 print row:" + p.toString());
 				p.print();
 				getDebugService().print("Print done");
 			}
