@@ -25,26 +25,26 @@ For development purposes it's best to use a local development:
 
 1. Fork this repo (or get the code elsehow)
 2. chrome-extension/browser/manifest.json
-  1. Open the file in an editor
-  2. Amend the json array for the key `content_scripts.matches` to match your needs
-  2. Amend the json array for the key `permissions` to match your needs
-  3. Save file
+    1. Open the file in an editor
+    2. Amend the json array for the key `content_scripts.matches` to match your needs
+    2. Amend the json array for the key `permissions` to match your needs
+    3. Save file
 3. [Chrome Extensions page in Google Chrome\*](chrome://extensions/)
-  1. Open page
-  2. Make sure `Developer Mode` is ticked
-  3. Click `Load unpacked extension...`
-  4. Navigate to the `chrome-extension/browser` directory of your source code.
-  5. Note the ID of your newly installed extension
+    1. Open page
+    2. Make sure `Developer Mode` is ticked
+    3. Click `Load unpacked extension...`
+    4. Navigate to the `chrome-extension/browser` directory of your source code.
+    5. Note the ID of your newly installed extension
 4. **For OSX:** chrome-extension/host/de.westwing.chrome.printer.ninja.json
-  1. Open the file in an editor
-  2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
-  3. Save file
-  4. Execute `install_host.sh`
+    1. Open the file in an editor
+    2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
+    3. Save file
+    4. Execute `install_host.sh`
 5. **For Windows:** chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
-  1. Open the file in an editor
-  2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
-  3. Save file
-  4. Execute `install_host.bat`
+    1. Open the file in an editor
+    2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
+    3. Save file
+    4. Execute `install_host.bat`
 
 \*: It might work similarly with Chromium and derivative browsers, but has only been tested using Google Chrome.
 
