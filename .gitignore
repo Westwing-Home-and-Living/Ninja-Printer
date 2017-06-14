@@ -8,4 +8,4 @@ java/dist/.gitignore
 java/src/.DS_Store
 java/build
 
-chrome-extension/host/print-debug.log
+**/print-debug.log

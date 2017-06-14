@@ -3,10 +3,11 @@
 Ninja Printer
 =============
 
-Ninja Printer is a browser based solution for printing from authorised website(s) using Google Chrome. Technically the
-solution is based on the NativeMessaging feature of the browser and runs a simple Java application in the background to
-execute printing on the local machine. Currently it only supports Windows and OSX, but it should be easy to adjust other
-unix-like systems.
+Ninja Printer is a browser based solution for printing from authorised website(s) using Google Chrome.
+
+Technically the solution is based on the NativeMessaging feature of the browser and runs a simple Java application in
+the background to execute printing on the local machine. Currently it only supports Windows and OSX, but it should be 
+easy to adjust to other unix-like systems.
 
 One of the main design goals was to be able to pick the printer to be used from the web application, meaning obviously
 that the application needs to be aware of the available printers on the users machine. NinjaPrinter ships with support
@@ -15,7 +16,7 @@ for 2 different type of documents: ZPL (label) and the PDF, but extending it sho
 Security & Customisation
 ------------------------
 
-Since the base implementation only supports *westwing* domains, localhost and 127.0.0.1, you will need to create your
+Since the base implementation only supports *Westwing* domains, localhost and 127.0.0.1, you will need to create your
 own extension if you intend to use it in production.
 
 ### Development
@@ -24,22 +25,23 @@ For development purposes it's best to use a local development:
 
 1. Fork this repo (or get the code elsehow)
 2. chrome-extension/browser/manifest.json
-  1. Find and open file
-  2. Amend `content_scripts.matches` to match your needs
+  1. Open the file in an editor
+  2. Amend the json array for the key `content_scripts.matches` to match your needs
+  2. Amend the json array for the key `permissions` to match your needs
   3. Save file
 3. [Chrome Extensions page in Google Chrome\*](chrome://extensions/)
   1. Open page
   2. Make sure `Developer Mode` is ticked
   3. Click `Load unpacked extension...`
-  4. Navigate to the chrome-extension/browser directory of your source code.
+  4. Navigate to the `chrome-extension/browser` directory of your source code.
   5. Note the ID of your newly installed extension
 4. **For OSX:** chrome-extension/host/de.westwing.chrome.printer.ninja.json
-  1. Find and open file
+  1. Open the file in an editor
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
   4. Execute `install_host.sh`
 5. **For Windows:** chrome-extension/host/de.westwing.chrome.printer.ninja-win.json
-  1. Find and open file
+  1. Open the file in an editor
   2. Amend `allowed_origins` to have an entry like "chrome-extension://{YOUR_EXTENSION_ID}/"
   3. Save file
   4. Execute `install_host.bat`
@@ -48,8 +50,10 @@ For development purposes it's best to use a local development:
 
 ### Production
 
-For production you'll also need to follow the above steps, but you'll need upload your chrome-extension/browser
-directory to [chrome web store](https://chrome.google.com/webstore/category/extensions) and install from there.
+For production you'll need to follow the above steps for the host (Step 3 or 4), but for the browser extension you'll
+need upload your chrome-extension/browser directory to 
+[chrome web store](https://chrome.google.com/webstore/category/extensions) and install from there. This makes
+distribution easier for clients.
 
 Installation
 ------------
@@ -103,8 +107,8 @@ Or you can setup your development version:
  - Double click: install_host.sh
 
 
-Usage
------
+Usage / API
+-----------
 
 The extension will inject NinjaPrinter.js into your website which containes the NinjaPrinter JavaScript object.
 
@@ -131,9 +135,13 @@ Development (OSX)
 
 ### Extension
 
-The chrome extension is standard Chrome extension, therefore all required documentation should be accessable in the [official
-documentation](https://developer.chrome.com/extensions/getstarted). The only part which is somewhat less usual is the
-[Native Messaging](https://developer.chrome.com/extensions/nativeMessaging).
+Regarding the browser extension all required documentation should be accessable in the
+[official Chrome documentation](https://developer.chrome.com/extensions/getstarted). The only part which is somewhat
+less usual is the [Native Messaging](https://developer.chrome.com/extensions/nativeMessaging).
+
+Both the injected script and the browser extension log extensively to the console log, both are visible in Chrome
+DevTools. The later can be found clicking the _background page_ link at the inspect views part on the browser
+extension page.
 
 ### Host
 
@@ -148,7 +156,12 @@ You can setup Eclipse or Netbeans to build the project, but the easiest way is i
 
 #### Running the host application
 
+It's also possible to run the host application manually, it expects messages on the standard input and logs to the
+standard output.
+
 ```
 java -jar ./chrome-extension/host/NinjaPrinter.jar
 ```
+
+The host also logs extensively to *chrome-extension/host/print-debug.log*.
 
