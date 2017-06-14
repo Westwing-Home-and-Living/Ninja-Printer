@@ -152,7 +152,9 @@ The Java host requires Java 8 to be installed, both for running the app (JRE) an
 #### Compiling the host application
 
 You can setup Eclipse or Netbeans to build the project, but the easiest way is instaling [ant](http://ant.apache.org/)
- (*brew install ant*), and running *./chrome-extension/host/compile.sh* or opening the *java* directory and running ant.
+ (*brew install ant*), and running *./chrome-extension/host/compile.sh*.
+ 
+Alternatively you can also choose to run `ant test` and `ant` from *java* directory.
 
 #### Running the host application
 
