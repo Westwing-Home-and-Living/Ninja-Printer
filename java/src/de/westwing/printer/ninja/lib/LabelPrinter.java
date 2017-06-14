@@ -1,11 +1,8 @@
 package de.westwing.printer.ninja.lib;
 
-import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
-import javax.print.DocFlavor;
 import javax.print.PrintService;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 
 import jzebra.PrintRaw;
 import de.westwing.printer.ninja.NinjaPrinter;
@@ -18,12 +15,17 @@ import de.westwing.printer.ninja.lib.document.DocumentInterface;
  */
 public class LabelPrinter extends AbstractPrinter {
 
+	private PrintRawFactory printRawFactory;
+
+	protected Debug debugService;
+
 	/**
 	 * @param printService
 	 */
-	public LabelPrinter(PrintService printService) {
+	public LabelPrinter(PrintService printService, PrintRawFactory printRawFactory) {
 		this.setPrintService(printService);
 		this.disableConsoleLogging();
+		this.printRawFactory = printRawFactory;
 	}
 
 	@Override
@@ -33,21 +35,21 @@ public class LabelPrinter extends AbstractPrinter {
 		}
 
 		try {
-			NinjaPrinter.debug("DocQueue:" + this.documentsQueue.size());
-			NinjaPrinter.debug("DocQueue:" + this.documentsQueue.toString());
+			getDebugService().print("DocQueue:" + this.documentsQueue.size());
+			getDebugService().print("DocQueue:" + this.documentsQueue.toString());
 			
 			for (DocumentInterface document : this.documentsQueue) {
-				NinjaPrinter.debug("Print begins");
+				getDebugService().print("Print begins");
 				
 				String temp = document.toRawString();
-				NinjaPrinter.debug("RawString in print:" + temp);
-				PrintRaw p = new Utf8PrintRaw(this.printService, temp);
-				NinjaPrinter.debug("UTF-8 print row:" + p.toString());
+				getDebugService().print("RawString in print:" + temp);
+				PrintRaw p = this.printRawFactory.createUtf8PrintRaw(this.printService, temp);
+				getDebugService().print("UTF-8 print row:" + p.toString());
 				p.print();
-				NinjaPrinter.debug("Print done");
+				getDebugService().print("Print done");
 			}
 		} catch (Exception ex) {
-			NinjaPrinter.debug(ex.getMessage());
+			getDebugService().print(ex.getMessage());
 			throw new PrintException(ex.getMessage(), ex);
 		}
 	}
@@ -58,24 +60,20 @@ public class LabelPrinter extends AbstractPrinter {
 	 */
 	protected void disableConsoleLogging() {
 		Logger rootLogger = Logger.getLogger("");
-		rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+
+		if (rootLogger.getHandlers().length > 0) {
+			rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+		}
 	}
 
 	/**
-	 * 
-	 * @author o.tchokhani
-	 *
+	 * @return Debug
 	 */
-	public static class Utf8PrintRaw extends PrintRaw {
-		/**
-		 * 
-		 * @param ps
-		 * @param printString
-		 * @throws UnsupportedEncodingException
-		 */
-		public Utf8PrintRaw(PrintService ps, String printString) throws UnsupportedEncodingException {
-			super(ps, printString, DocFlavor.BYTE_ARRAY.AUTOSENSE, null, new HashPrintRequestAttributeSet(),
-					java.nio.charset.Charset.forName("UTF-8"));
+	protected Debug getDebugService() {
+		if (debugService == null) {
+			debugService = new Debug();
 		}
+
+		return debugService;
 	}
 }

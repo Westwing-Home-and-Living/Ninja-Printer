@@ -1,6 +1,8 @@
 package de.westwing.printer.ninja;
 
+import de.westwing.printer.ninja.lib.Debug;
 import de.westwing.printer.ninja.lib.PrinterFactory;
+import de.westwing.printer.ninja.lib.Utilities;
 import de.westwing.printer.ninja.lib.chrome.io.MessageOutput;
 import de.westwing.printer.ninja.lib.chrome.io.MessageReader;
 import de.westwing.printer.ninja.lib.chrome.message.Message;
@@ -11,12 +13,9 @@ import de.westwing.printer.ninja.lib.message.JsonPrintMessageInterface;
 import java.awt.BorderLayout;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Calendar;
 
@@ -31,12 +30,12 @@ import javax.swing.SwingUtilities;
  * @author <omar.tchokhani@westwing.de>
  */
 public class NinjaPrinter {
-
-	protected static final String DEBUG_FILE_NAME = "print-debug.log";
-	protected static final int MAX_DEBUG_FILE_SIZE = 5000000;
-	
 	protected MessageReader reader;
 	protected MessageOutput writer;
+
+	protected Utilities utility;
+
+	protected Debug debugService;
 	
 	/**
 	 * @param ins
@@ -45,6 +44,31 @@ public class NinjaPrinter {
 	public NinjaPrinter(MessageReader ins, MessageOutput out) {
 		this.reader = ins;
 		this.writer =  out;
+	}
+
+	/**
+	 * @return PrinterFactory
+	 */
+	protected PrinterFactory getPrinterFactory() {
+		return new PrinterFactory();
+	}
+
+	/**
+	 * @return Utilities
+	 */
+	public Utilities getUtility() {
+		if (null == this.utility) {
+			this.setUtility(new Utilities());
+		}
+
+		return this.utility;
+	}
+
+	/**
+	 * @param utility
+	 */
+	public void setUtility(Utilities utility) {
+		this.utility = utility;
 	}
 	
 	/**
@@ -68,41 +92,42 @@ public class NinjaPrinter {
 	 * Starts listening for a print requests on the input stream.
 	 */
 	public void start() {
-		debug("START");
+		getDebugService().print("START");
 		
 		JsonPrintMessageInterface printMessage = null;
 		MessageInterface message = null;
 		
 		try {
 			while(true) {
-				debug("Waiting for print requests...");
+				getDebugService().print("Waiting for print requests...");
 				if (this.reader.available() > 0) {
 					break;
 				}
 			}
 
-			debug("Print request receieved.... processing...");
+			getDebugService().print("Print request receieved.... processing...");
 			
 			// Read message.
 			message = reader.read();
-			debug("Raw message: " + message);
+			getDebugService().print("Raw message: " + message);
 			printMessage = JsonMessageParser.getInstance().parse(message);
-			debug("Parsed message: " + printMessage);
+			getDebugService().print("Parsed message: " + printMessage);
 			// Send document to printer.
-			PrinterFactory.factory(printMessage)
+
+			getPrinterFactory().factory(printMessage, this.getUtility())
 							.enqueue(printMessage.getDocument())
 							.print();
-			debug("Document sent to printer");
+			getDebugService().print("Document sent to printer");
 			// Send response back.
 			writer.write(this.getSuccessMessage(printMessage));
-			
-			debug("Processing completed. ");
+
+			getDebugService().print("Processing completed. ");
 		} catch (Exception ex) {
 			for (StackTraceElement ste : ex.getStackTrace()) {
-				debug(ste.toString());
+				getDebugService().print(ste.toString());
 			}
-			
-			debug("Exception thrown:" + ex.getMessage());
+
+			getDebugService().print("Exception thrown:" + ex.getMessage());
 			try {
 				this.writer.write(this.getErrorMessage(printMessage, ex));
 			} catch (IOException ioex) {
@@ -110,7 +135,7 @@ public class NinjaPrinter {
 			}
 			ex.printStackTrace();
 		} finally {
-			debug("END");
+			getDebugService().print("END");
 		}
 		
 	}
@@ -123,8 +148,8 @@ public class NinjaPrinter {
 	{
 		String response = "{\"success\":true,\"message\":\"success\", \"requestId\":\"" + printMessage.getRequestId() + "\"}";
 		MessageInterface responseMessage = new Message(response);
-		
-		debug("Response success: " + responseMessage);
+
+		getDebugService().print("Response success: " + responseMessage);
 		
 		return responseMessage;
 	}
@@ -140,49 +165,10 @@ public class NinjaPrinter {
 		
 		String response = "{\"success\":false,\"message\":\"" + ex.getMessage() + "\", \"requestId\":\"" + requestId + "\"}";
 		MessageInterface responseMessage = new Message(response);
-		
-		debug("Response error: " + responseMessage);
+
+		getDebugService().print("Response error: " + responseMessage);
 		
 		return responseMessage;
-	}
-	
-	/**
-	 * @param message
-	 */
-	public static void debug(String message)
-	{
-		try {
-		    Files.write(getDebugFilePath(), (Calendar.getInstance().getTime() + " " + message + '\r' +'\n').getBytes(), StandardOpenOption.APPEND);			
-		} catch (IOException e) {
-			System.err.println("Can not write to file:" + e.getMessage());
-			System.err.println(Calendar.getInstance().getTime() + " " + message);
-		}
-	}
-	
-	/**
-	 * Retrieves the file path of the debug log file
-	 * - creates the file if not exists or file already exceeded the file size limit
-	 * - opens the file for appending otherwise 
-	 * 
-	 * @return
-	 */
-	protected static Path getDebugFilePath()
-	{
-		Path debugFilePath = Paths.get(DEBUG_FILE_NAME);
-
-		try {
-			if (Files.exists(debugFilePath) && Files.size(debugFilePath) < MAX_DEBUG_FILE_SIZE) {
-				return debugFilePath;
-			}
-			
-			if (Files.exists(debugFilePath)) {
-				Files.delete(debugFilePath);				
-			}
-			Files.createFile(debugFilePath);
-		} catch (IOException e) {
-		}
-		
-		return debugFilePath;
 	}
 
 	/**
@@ -220,4 +206,14 @@ public class NinjaPrinter {
 		});
 	}
 
+	/**
+	 * @return Debug
+	 */
+	protected Debug getDebugService() {
+		if (debugService == null) {
+			debugService = new Debug();
+		}
+
+		return debugService;
+	}
 }
