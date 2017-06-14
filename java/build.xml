@@ -9,8 +9,28 @@
 
     <property name="lib.dir"     value="${src.dir}/lib"/>
 
+    <property name="test.dir"       value="test"/>
+    <property name="test.build.dir" value="${build.dir}/test"/>
+    <property name="test.src.dir"   value="test"/>
+
     <path id="libpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <path id="classpath.test">
+        <pathelement location="${lib.dir}/junit-4.12.jar"/>
+        <pathelement location="${lib.dir}/hamcrest-core-1.3.jar"/>
+        <pathelement location="${lib.dir}/mockito-core-2.0.42-beta.jar"/>
+
+	<pathelement location="${lib.dir}/javassist-3.21.0-GA.jar"/>
+	<pathelement location="${lib.dir}/jzebra.jar"/>
+	<pathelement location="${lib.dir}/objenesis-2.4.jar"/>
+	<pathelement location="${lib.dir}/org.json-20120521.jar"/>
+	<pathelement location="${lib.dir}/PDFRenderer-0.9.0-improved.jar"/>
+	<pathelement location="${lib.dir}/powermock-mockito2-1.6.6-full.jar"/>
+
+        <pathelement location="${build.dir}"/>
+        <pathelement location="${classes.dir}"/>
     </path>
 
     <target name="clean">
@@ -51,4 +71,25 @@
 
     <target name="main" depends="clean,jar"/>
 
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${test.build.dir}"/>
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
+            <classpath refid="classpath.test"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <junit printsummary="on" haltonfailure="yes" fork="true">
+            <classpath>
+                <path refid="classpath.test"/>
+                <pathelement location="${test.build.dir}"/>
+            </classpath>
+            <formatter type="brief" usefile="false" />
+            <batchtest>
+                <fileset dir="${test.src.dir}" includes="**/*Test.java" />
+            </batchtest>
+        </junit>
+    </target>
+
 </project>
+
