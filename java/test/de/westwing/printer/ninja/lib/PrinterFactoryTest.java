@@ -59,19 +59,4 @@ public class PrinterFactoryTest
 
         assertEquals(expectedResult, actualResult.getClass());
     }
-
-    @Test
-    public void test() throws Exception {
-        Object actualResult;
-        Class expectedResult = LabelPrinter.class;
-        String printerName = "dummyPrinterName";
-
-        when(printMessageMock.getPrinterType()).thenReturn(PrinterFactory.PrinterType.LABEL.toString());
-        when(printMessageMock.getPrinterName()).thenReturn(printerName);
-        when(utilitiesServiceMock.lookupPrinterServiceByName(printerName)).thenReturn(printServiceMock);
-
-        actualResult = sut.factory(printMessageMock);
-
-        assertEquals(expectedResult, actualResult.getClass());
-    }
 }
