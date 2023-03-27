@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Ninja-Printer
+  title: Ninja Printer Chrome Plugin
+  description: |
+    Ninja Printer is a browser based solution for printing from authorised website(s) using Google Chrome.
+    Technically the solution is based on the NativeMessaging feature of the browser and runs a simple Java 
+    application in the background to execute printing on the local machine. Currently it only supports Windows 
+    and OSX, but it should be easy to adjust to other unix-like systems.
+    One of the main design goals was to be able to pick the printer to be used from the web application, meaning 
+    obviously that the application needs to be aware of the available printers on the users machine. NinjaPrinter 
+    ships with support for 2 different type of documents: ZPL (label) and the PDF, but extending it should be fairly 
+    straight forward.
+  links:
+    - url: https://westwing.jira.com/wiki/spaces/DEV/pages/104136723/OMS+Ninja+Printer+Chrome+extension
+      title: Confluence documentation
+    - url: https://git.westwing.eu/oms/ninja-printer
+      title: Old GitLab Repository
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: 'Westwing-Home-and-Living/Ninja-Printer'
+spec:
+  type: chrome-plugin
+  system: oms-system
+  lifecycle: production
+  owner: fulfillment-tribe
+entrypoints:
+  myChromePlugin:
+    target: ./chrome-extension/browser/content.js
+
+
