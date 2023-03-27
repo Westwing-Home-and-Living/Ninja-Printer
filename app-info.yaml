@@ -26,5 +26,17 @@ spec:
   lifecycle: production
   owner: fulfillment-tribe
 
+  dependsOn:
+        - resource:default/java-printer
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: java-printer
+  description: Java printer application is part of Ninja Printer. This is a service that runs in the background on given os.
+spec:
+  type: application
+  system: oms-system
+  owner: fulfillment-tribe
 
 
