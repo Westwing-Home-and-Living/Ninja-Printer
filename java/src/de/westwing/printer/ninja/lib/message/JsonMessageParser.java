@@ -13,6 +13,7 @@ import java.net.URLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.westwing.printer.ninja.lib.Debug;
 import de.westwing.printer.ninja.lib.chrome.message.MessageInterface;
 import de.westwing.printer.ninja.lib.document.Base64Document;
 import de.westwing.printer.ninja.lib.document.ByteDocument;
@@ -82,7 +83,7 @@ public class JsonMessageParser {
 			document = new Base64Document(json.getString("fileContent"));
 		}
 
-		if (json.has("secondaryPrinterName")) {
+		if (json.has("secondaryPrinterName") && !json.isNull("secondaryPrinterName")) {
 			secondaryPrinterName = json.getString("secondaryPrinterName");
 		}
 		
@@ -160,5 +161,12 @@ public class JsonMessageParser {
 			if (null != ins) ins.close();
 			if (null != out) out.close();
 		}
+	}
+
+	/**
+	 * @return Debug
+	 */
+	protected Debug getDebugService() {
+		return Debug.getInstance();
 	}
 }
