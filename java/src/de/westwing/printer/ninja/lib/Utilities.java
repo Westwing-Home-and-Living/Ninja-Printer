@@ -49,7 +49,7 @@ public class Utilities
 		PrintService[] services = this.getPrintServices();
 
 		for (PrintService service : services) {
-			if (service.getName().contains(printerName)) {
+			if (service.getName().equalsIgnoreCase(printerName)) {
 				return Optional.of(service);
 			}
 		}
