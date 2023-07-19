@@ -11,6 +11,22 @@ public class Debug {
     protected static final String DEBUG_FILE_NAME = "print-debug.log";
     protected static final int MAX_DEBUG_FILE_SIZE = 5000000;
 
+    private static Debug instance = null;
+
+    private Debug()
+    {
+
+    }
+
+    public static synchronized Debug getInstance()
+    {
+        if (instance == null) {
+			instance = new Debug();
+		}
+
+		return instance;
+    }
+
     /**
      * @param message
      */

@@ -10,6 +10,8 @@ public class JsonPrintMessage implements JsonPrintMessageInterface {
 	protected String body;
 	
 	protected String printerName;
+
+	protected String secondaryPrinterName;
 	
 	protected String printerType;
 	
@@ -37,6 +39,14 @@ public class JsonPrintMessage implements JsonPrintMessageInterface {
 	
 	@Override public String getPrinterName() {
 		return this.printerName;
+	}
+
+	@Override public void setSecondaryPrinterName(String secondaryPrinterName) {
+		this.secondaryPrinterName =  secondaryPrinterName;
+	}
+	
+	@Override public String getSecondaryPrinterName() {
+		return this.secondaryPrinterName;
 	}
 	
 	@Override public String getPrinterType() {
@@ -72,6 +82,8 @@ public class JsonPrintMessage implements JsonPrintMessageInterface {
 		sb.append(this.getPrinterType());
 		sb.append(", PrinterName: ");
 		sb.append(this.getPrinterName());
+		sb.append(", SecondaryPrinterName: ");
+		sb.append(this.getSecondaryPrinterName());
 		sb.append(", RequestId: ");
 		sb.append(this.getRequestId());
 		sb.append("]");

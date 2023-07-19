@@ -8,12 +8,16 @@ public interface JsonPrintMessageInterface {
 	public String getPrinterType();
 	
 	public String getPrinterName();
+
+	public String getSecondaryPrinterName();
 	
 	public String getRequestId();
 	
 	public void setRequestId(String id);
 	
 	public void setPrinterName(String printerName);
+
+	public void setSecondaryPrinterName(String secondaryPrinterName);
 	
     public void setPrinterType(String printerType);
 	

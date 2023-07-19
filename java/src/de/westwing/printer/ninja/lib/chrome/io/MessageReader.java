@@ -13,7 +13,6 @@ import de.westwing.printer.ninja.lib.chrome.message.MessageInterface;
 public class MessageReader implements MessageReaderInterface {
 
 	protected InputStream ins;
-	protected Debug debugService;
 
 	public MessageReader(InputStream ins) {
 		this.ins = ins;
@@ -81,10 +80,6 @@ public class MessageReader implements MessageReaderInterface {
 	 * @return Debug
 	 */
 	protected Debug getDebugService() {
-		if (debugService == null) {
-			debugService = new Debug();
-		}
-
-		return debugService;
+		return Debug.getInstance();
 	}
 }

@@ -80,6 +80,8 @@ public class JsonPrintMessageTest {
         stringBuilder.append(this.sut.getPrinterType());
         stringBuilder.append(", PrinterName: ");
         stringBuilder.append(this.sut.getPrinterName());
+        stringBuilder.append(", SecondaryPrinterName: ");
+		stringBuilder.append(this.sut.getSecondaryPrinterName());
         stringBuilder.append(", RequestId: ");
         stringBuilder.append(this.sut.getRequestId());
         stringBuilder.append("]");
