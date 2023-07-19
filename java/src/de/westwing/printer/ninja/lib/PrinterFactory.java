@@ -76,7 +76,7 @@ public class PrinterFactory {
 	 */
 	public PrinterInterface factory(JsonPrintMessageInterface printMessage, Utilities utility) throws PrintException, Exception
 	{
-		PrintService printService = utility.lookupPrinterServiceByName(printMessage.getPrinterName());
+		PrintService printService = utility.lookupPrinterService(printMessage);
 		
 		return factory(printMessage.getPrinterType(), printService);
 	}

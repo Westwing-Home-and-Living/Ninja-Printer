@@ -34,8 +34,6 @@ public class NinjaPrinter {
 	protected MessageOutput writer;
 
 	protected Utilities utility;
-
-	protected Debug debugService;
 	
 	/**
 	 * @param ins
@@ -210,10 +208,6 @@ public class NinjaPrinter {
 	 * @return Debug
 	 */
 	protected Debug getDebugService() {
-		if (debugService == null) {
-			debugService = new Debug();
-		}
-
-		return debugService;
+		return Debug.getInstance();
 	}
 }

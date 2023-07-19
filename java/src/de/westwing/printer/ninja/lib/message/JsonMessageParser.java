@@ -67,6 +67,7 @@ public class JsonMessageParser {
 		JSONObject json = new JSONObject(message.getBody());
 		String printerName = json.getString("printerName");
 		String printerType = json.getString("printerType");
+		String secondaryPrinterName = null;
 		DocumentInterface document = null;
 		
 		if (json.has("filePath")) {
@@ -80,10 +81,15 @@ public class JsonMessageParser {
 		} else {
 			document = new Base64Document(json.getString("fileContent"));
 		}
+
+		if (json.has("secondaryPrinterName")) {
+			secondaryPrinterName = json.getString("secondaryPrinterName");
+		}
 		
 		JsonPrintMessage  printMessage = new JsonPrintMessage(message);
 		printMessage.setPrinterName(printerName);
 		printMessage.setPrinterType(printerType);
+		printMessage.setSecondaryPrinterName(secondaryPrinterName);
 		printMessage.setDocument(document);
 		
 		if(json.has("requestId")) {

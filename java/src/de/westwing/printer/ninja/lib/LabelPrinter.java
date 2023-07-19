@@ -17,8 +17,6 @@ public class LabelPrinter extends AbstractPrinter {
 
 	private PrintRawFactory printRawFactory;
 
-	protected Debug debugService;
-
 	/**
 	 * @param printService
 	 */
@@ -70,10 +68,6 @@ public class LabelPrinter extends AbstractPrinter {
 	 * @return Debug
 	 */
 	protected Debug getDebugService() {
-		if (debugService == null) {
-			debugService = new Debug();
-		}
-
-		return debugService;
+		return Debug.getInstance();
 	}
 }

@@ -25,7 +25,8 @@ var NinjaPrinter = {
     //     printerName: "printerName",
     //     printerType: "[label|PDF]",
     //     fileContent: "base64encoded_or_absolutePath",
-    //     requestId: "requestId"
+    //     requestId: "requestId",
+    //     secondaryPrinterName: "secondaryPrinterName",
     // }
     print: function (request) {
         this._fireEvent(this.events.beforePrint, {data: request});
@@ -34,23 +35,23 @@ var NinjaPrinter = {
     },
 
     // Triggers printing a zpl document
-    printZpl: function (printerName, base64Content, requestId) {
-        this.print({printerName: printerName, fileContent: base64Content, printerType: "label", requestId: requestId});
+    printZpl: function (printerName, base64Content, requestId, secondaryPrinterName) {
+        this.print({printerName: printerName, fileContent: base64Content, printerType: "label", requestId: requestId, secondaryPrinterName: secondaryPrinterName});
     },
 
     // Triggers printing a pdf document
-    printPdf: function (printerName, base64Content, requestId) {
-        this.print({printerName: printerName, fileContent: base64Content, printerType: "PDF", requestId: requestId});
+    printPdf: function (printerName, base64Content, requestId, secondaryPrinterName) {
+        this.print({printerName: printerName, fileContent: base64Content, printerType: "PDF", requestId: requestId, secondaryPrinterName: secondaryPrinterName});
     },
 
     // @deprecated
-    printLabel: function (printerName, base64Content, requestId) {
-        this.printZpl(printerName, base64Content, requestId);
+    printLabel: function (printerName, base64Content, requestId, secondaryPrinterName) {
+        this.printZpl(printerName, base64Content, requestId, secondaryPrinterName);
     },
 
     // @deprecated
-    printPDF: function (printerName, base64Content, requestId) {
-        this.printPdf(printerName, base64Content, requestId);
+    printPDF: function (printerName, base64Content, requestId, secondaryPrinterName) {
+        this.printPdf(printerName, base64Content, requestId, secondaryPrinterName);
     },
 
     // Attach an event listener.
