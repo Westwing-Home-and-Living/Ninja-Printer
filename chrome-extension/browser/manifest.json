@@ -1,13 +1,10 @@
 {
     "name": "Ninja Printer",
-    "version": "1.0.8",
-    "manifest_version": 2,
-    "description": "Westwing Printing solution",
+    "version": "1.1.0",
+    "manifest_version": 3,
+    "description": "Westwing printing solution",
     "background": {
-        "scripts": [
-            "main.js"
-        ],
-        "persistent": true
+        "service_worker": "service_worker.js"
     },
     "content_scripts": [
         {
@@ -31,13 +28,22 @@
         }
     ],
     "web_accessible_resources": [
-        "NinjaPrinter.js"
+        {
+            "resources": [
+                "NinjaPrinter.js"
+            ],
+            "matches": [
+                "*://*/*"
+            ]
+        }
     ],
     "icons": {
         "128": "ninja-128.png"
     },
     "permissions": [
-        "nativeMessaging",
+        "nativeMessaging"
+    ],
+    "host_permissions": [
         "*://*.west-wing.ws/*",
         "*://*.westwing.es/*",
         "*://*.westwing.fr/*",
@@ -51,4 +57,3 @@
         "*://*.westwingnow.eu/*"
     ]
 }
-

@@ -54,7 +54,7 @@ var NinjaPrinterCore = {
         var scriptElement = document.createElement('script');
         var parent = (document.head || document.body);
 
-        scriptElement.src = chrome.extension.getURL('NinjaPrinter.js');
+        scriptElement.src = chrome.runtime.getURL('NinjaPrinter.js');
 
         parent.insertBefore(scriptElement, parent.firstChild);
     },
