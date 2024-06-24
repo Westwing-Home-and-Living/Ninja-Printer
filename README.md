@@ -50,7 +50,7 @@ For development purposes it's best to use a local development:
 
 ### Production
 
-For production you'll need to follow the above steps for the host (Step 3 or 4), but for the browser extension you'll
+For production you'll need to follow the above steps for the host (Step 4 or 5), but for the browser extension you'll
 need upload your chrome-extension/browser directory to 
 [chrome web store](https://chrome.google.com/webstore/category/extensions) and install from there. This makes
 distribution easier for clients.

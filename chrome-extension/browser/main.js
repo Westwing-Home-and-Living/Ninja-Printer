@@ -20,8 +20,8 @@ var Main = {
     print: function (request, sender, sendResponse) {
         console.info('Main.print');
         console.info("Sender", sender);
-        console.info('Request', request);
-        console.info('sendResponse', sendResponse);
+        console.info("Request", request);
+        console.info("sendResponse", sendResponse);
 
         chrome.runtime.sendNativeMessage(Main.hostName, request, function (response) {
             if (!response) {
@@ -30,7 +30,12 @@ var Main = {
             console.info("Response: ", response);
 
             // Send response back to content script
-            chrome.tabs.sendMessage(sender.tab.id, {action: 'print', response: response}, function (response) {
+            chrome.tabs.sendMessage(sender.tab.id, {action: "print", response: response})
+            .then((response) => {
+                console.info("tabs.sendMessage Response", response);
+            })
+            .catch((error) => {
+                console.error("tabs.sendMessage Error", error);
             });
         });
 
