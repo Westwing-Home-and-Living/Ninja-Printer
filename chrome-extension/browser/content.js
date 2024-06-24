@@ -15,7 +15,7 @@ var NinjaPrinterCore = {
 
     // Logs messages to background console for easy debugging.
     log: function (msg) {
-        this._sendMessage({fn: 'log', message: msg});
+        this._sendMessage({fn: "log", message: msg});
     },
 
     // Listen for response messages form background script
@@ -23,7 +23,7 @@ var NinjaPrinterCore = {
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             console.info("NinjaPrinterCore.response", request);
 
-            if (request.action === 'print') {
+            if (request.action === "print") {
                 customEvent = new CustomEvent("ninjaprinter.result", {detail: request.response});
                 document.dispatchEvent(customEvent);
             }
@@ -41,7 +41,7 @@ var NinjaPrinterCore = {
             }
 
             if (!NinjaPrinterCore._validateRequest(event.data)) {
-                return console.info('Invalid request, make sure all parameters are set.');
+                return console.info("Invalid request, make sure all parameters are set.");
             }
 
             NinjaPrinterCore.print(event.data);
@@ -51,10 +51,10 @@ var NinjaPrinterCore = {
 
     // Inject web accessible scripts to the current page.
     _injectPageScripts: function () {
-        var scriptElement = document.createElement('script');
+        var scriptElement = document.createElement("script");
         var parent = (document.head || document.body);
 
-        scriptElement.src = chrome.runtime.getURL('NinjaPrinter.js');
+        scriptElement.src = chrome.runtime.getURL("NinjaPrinter.js");
 
         parent.insertBefore(scriptElement, parent.firstChild);
     },
@@ -63,8 +63,12 @@ var NinjaPrinterCore = {
     _sendMessage: function (request, callback) {
         console.info("_sendMessage:", request);
 
-        chrome.runtime.sendMessage(request, function (response) {
+        chrome.runtime.sendMessage(request)
+        .then((response) => {
             console.info("_sendMessage Response: ", response);
+        })
+        .catch((error) => {
+            console.error("_sendMessage Response Error: ", error);
         });
 
         console.info("_sendMessage end");
@@ -72,7 +76,7 @@ var NinjaPrinterCore = {
 
     // Validates required request params
     _validateRequest: function (request) {
-        if (!request.printerName || request.printerName == '') {
+        if (!request.printerName || request.printerName == "") {
             return false;
         }
 
@@ -80,11 +84,11 @@ var NinjaPrinterCore = {
             return false;
         }
 
-        if (request.printerType.toUpperCase() != 'LABEL' && request.printerType.toUpperCase() != 'PDF') {
+        if (request.printerType.toUpperCase() != "LABEL" && request.printerType.toUpperCase() != "PDF") {
             return false;
         }
 
-        if (!request.fileContent || request.fileContent == '') {
+        if (!request.fileContent || request.fileContent == "") {
             return false;
         }
 
